@@ -1,4 +1,4 @@
-*.o
+git branch -M main*.o
 *.a
 *.so
 *.so.*
