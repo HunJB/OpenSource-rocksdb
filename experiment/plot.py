@@ -5,10 +5,9 @@ import numpy as np
 import os
 
 plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 fig.suptitle('RocksDB Block Cache Hit Rate Analysis', fontsize=13, fontweight='bold')
 
-# ── 파일 존재 여부 확인 후 로드 ───────────────────────────
 def load_csv(path):
     if os.path.exists(path):
         print(f"✓ 로드: {path}")
@@ -21,7 +20,7 @@ df_bench  = load_csv('results/dbbench_results.csv')
 df_custom = load_csv('results/custom_dist.csv')
 df_sweep  = load_csv('results/custom_cache_sweep.csv')
 
-# ── 그래프 1: 분포별 Hit Rate ─────────────────────────────
+# ── 그래프 1: 분포별 Hit Rate (32MB 고정) ────────────────
 frames = []
 if df_custom is not None:
     frames.append(df_custom[df_custom['cache_mb'] == 32][['workload','hit_rate']])
@@ -53,23 +52,37 @@ else:
 
 ax1.set_title('Access Distribution vs Cache Hit Rate\n(Cache=32MB, N=100K keys, Reads=50K)')
 
-# ── 그래프 2: 캐시 크기 vs Hit Rate ──────────────────────
+# ── 그래프 2: 캐시 크기 vs Hit Rate (모든 분포) ──────────
+# 분포별 색상 및 마커 지정
+styles = {
+    'Gaussian_s10': ('forestgreen',  '^', '-'),
+    'Gaussian_s05': ('limegreen',    'v', '-'),
+    'Zipfian_a10':  ('steelblue',    'o', '-'),
+    'Zipfian_a05':  ('cornflowerblue','s', '-'),
+    'Hotspot_8020': ('orange',       'D', '-'),
+    'Hotspot_9505': ('red',          '*', '-'),
+    'Uniform':      ('gray',         'x', '--'),
+    'Sequential':   ('black',        '+', '--'),
+}
+
 has_data = False
 
 if df_sweep is not None:
-    d_g = df_sweep[df_sweep['workload'] == 'Gaussian_s10'].sort_values('cache_mb')
-    if not d_g.empty:
-        ax2.plot(d_g['cache_mb'], d_g['hit_rate'],
-                 '-^', color='forestgreen', lw=2, ms=7,
-                 label='Gaussian (σ=10%)', markerfacecolor='white')
-        has_data = True
+    for workload in df_sweep['workload'].unique():
+        d = df_sweep[df_sweep['workload'] == workload].sort_values('cache_mb')
+        if not d.empty:
+            color, marker, ls = styles.get(workload, ('purple', 'o', '-'))
+            ax2.plot(d['cache_mb'], d['hit_rate'],
+                     ls + marker, color=color, lw=2, ms=7,
+                     label=workload, markerfacecolor='white')
+            has_data = True
 
 if df_bench is not None:
-    for wl, color, marker in [('Uniform','steelblue','o'),('Sequential','tomato','s')]:
+    for wl, color, marker in [('Uniform','gray','x'), ('Sequential','black','+')]:
         d = df_bench[df_bench['workload'] == wl].sort_values('cache_mb')
         if not d.empty:
             ax2.plot(d['cache_mb'], d['hit_rate'],
-                     f'-{marker}', color=color, lw=2, ms=7,
+                     f'--{marker}', color=color, lw=2, ms=7,
                      label=wl, markerfacecolor='white')
             has_data = True
 
@@ -81,13 +94,13 @@ if has_data:
     ax2.set_ylim(0, 100)
     ax2.grid(True, alpha=0.3)
     ax2.axhline(80, color='red', ls='--', lw=0.8, label='80% target')
-    ax2.legend(fontsize=8)
+    ax2.legend(fontsize=8, loc='lower right')
 else:
     ax2.text(0.5, 0.5, 'No Data Available',
              ha='center', va='center', fontsize=12, color='gray',
              transform=ax2.transAxes)
 
-ax2.set_title('Cache Size vs Hit Rate\n(N=100K keys, Reads=50K)')
+ax2.set_title('Cache Size vs Hit Rate (All Distributions)\n(N=100K keys, Reads=50K)')
 
 plt.tight_layout()
 os.makedirs('results', exist_ok=True)

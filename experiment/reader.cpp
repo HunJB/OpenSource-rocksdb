@@ -114,21 +114,29 @@ int main() {
     std::ofstream csv2("./results/custom_cache_sweep.csv");
     csv2 << "workload,cache_mb,hit,miss,hit_rate\n";
 
-    std::cout << "\n[실험 2] 캐시 크기별 Hit Rate (Gaussian σ=10%)\n";
+    std::cout << "\n[실험 2] 캐시 크기별 Hit Rate (모든 분포)\n";
     std::cout << std::string(55, '=') << "\n";
 
-    auto gauss_keys = gen.gaussian(NUM_REQUESTS, 0.5, 0.10);
+    std::vector<std::pair<std::string, std::vector<int>>> sweep_workloads = {
+        {"Gaussian_s10", gen.gaussian(NUM_REQUESTS, 0.5, 0.10)},
+        {"Gaussian_s05", gen.gaussian(NUM_REQUESTS, 0.5, 0.05)},
+        {"Zipfian_a10",  gen.zipfian(NUM_REQUESTS,  1.0)},
+        {"Zipfian_a05",  gen.zipfian(NUM_REQUESTS,  0.5)},
+        {"Hotspot_8020", gen.hotspot(NUM_REQUESTS,  0.20, 0.80)},
+        {"Hotspot_9505", gen.hotspot(NUM_REQUESTS,  0.05, 0.95)},
+    };
 
-    for (int mb : {4, 8, 16, 32, 64, 128, 256}) {
-        // 캐시 크기마다 DB 새로 열기 → Cold Cache 보장
-        CacheResult r = measure((size_t)mb * 1024 * 1024, gauss_keys);
-
-        std::cout << "  Cache " << std::setw(4) << mb
-                  << " MB → "  << r.rate() << "%\n";
-
-        csv2 << "Gaussian_s10," << mb << "," << r.hit << ","
-             << r.miss << "," << r.rate() << "\n";
+    for (auto& [name, keys] : sweep_workloads) {
+        std::cout << "\n  [" << name << "]\n";
+        for (int mb : {4, 8, 16, 32, 64, 128, 256}) {
+            CacheResult r = measure((size_t)mb * 1024 * 1024, keys);
+            std::cout << "    Cache " << std::setw(4) << mb
+                    << " MB → " << r.rate() << "%\n";
+            csv2 << name << "," << mb << "," << r.hit << ","
+                << r.miss << "," << r.rate() << "\n";
+        }
     }
+
 
     std::cout << "\n✓ results/custom_dist.csv\n";
     std::cout << "✓ results/custom_cache_sweep.csv\n";
