@@ -1,0 +1,13 @@
+workload,cache_mb,hit,miss,hit_rate
+Uniform,4,0,0,0.00
+Sequential,4,0,0,0.00
+Uniform,8,0,0,0.00
+Sequential,8,0,0,0.00
+Uniform,16,0,0,0.00
+Sequential,16,0,0,0.00
+Uniform,32,0,0,0.00
+Sequential,32,0,0,0.00
+Uniform,64,0,0,0.00
+Sequential,64,0,0,0.00
+Uniform,128,0,0,0.00
+Sequential,128,0,0,0.00
