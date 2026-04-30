@@ -11,3 +11,8 @@ experiment/results/*.png
 *.d
 *.pyc
 __pycache__/
+# 실험 결과 (매번 바뀜)
+experiment/results/
+experiment/reader
+experiment/writer
+experiment/experiment
