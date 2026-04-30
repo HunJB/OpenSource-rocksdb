@@ -5,14 +5,14 @@ CXXFLAGS = -std=c++20 -O2 -I$(ROCKSDB_DIR)/include
 LDFLAGS  = $(ROCKSDB_DIR)/librocksdb.a \
            -lpthread -ldl -lz -lbz2 -lsnappy -llz4 -lzstd -lgflags
 
-all: experiment
+all: writer reader
 
-experiment: main.cpp workload_gen.h
-	$(CXX) $(CXXFLAGS) main.cpp -o experiment $(LDFLAGS)
+writer: writer.cpp
+	$(CXX) $(CXXFLAGS) writer.cpp -o writer $(LDFLAGS)
 
-run: experiment
-	./experiment
+reader: reader.cpp workload_gen.h
+	$(CXX) $(CXXFLAGS) reader.cpp -o reader $(LDFLAGS)
 
 clean:
-	rm -f experiment
+	rm -f writer reader
 	rm -rf results/*.csv results/*.png
