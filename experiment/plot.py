@@ -3,42 +3,57 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
 import os
+import glob
 
 plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
+
+# ── 타임스탬프 자동 감지 ──────────────────────────────────
+def get_latest_timestamp():
+    ts_file = 'results/latest_timestamp.txt'
+    if os.path.exists(ts_file):
+        with open(ts_file) as f:
+            return f.read().strip()
+    return None
+
+def load_latest(pattern):
+    """패턴에 맞는 가장 최신 파일 로드"""
+    files = sorted(glob.glob(f'results/*{pattern}'))
+    if not files:
+        print(f"✗ 없음 (스킵): *{pattern}")
+        return None, None
+    latest = files[-1]
+    print(f"✓ 로드: {latest}")
+    return pd.read_csv(latest), os.path.basename(latest)
+
+# ── 데이터 로드 ───────────────────────────────────────────
+ts = get_latest_timestamp() or "unknown"
+df_bench,  bench_name  = load_latest('_dbbench_results.csv')
+df_custom, custom_name = load_latest('_custom_dist.csv')
+df_sweep,  sweep_name  = load_latest('_custom_cache_sweep.csv')
+
+print(f"\n실험 타임스탬프: {ts}")
+
+# ── 그래프 생성 ───────────────────────────────────────────
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-fig.suptitle('RocksDB Block Cache Hit Rate Analysis', fontsize=13, fontweight='bold')
+fig.suptitle(f'RocksDB Block Cache Hit Rate Analysis\n({ts})',
+             fontsize=13, fontweight='bold')
 
-def load_csv(path):
-    if os.path.exists(path):
-        print(f"✓ 로드: {path}")
-        return pd.read_csv(path)
-    else:
-        print(f"✗ 없음 (스킵): {path}")
-        return None
-
-df_bench  = load_csv('results/dbbench_results.csv')
-df_custom = load_csv('results/custom_dist.csv')
-df_sweep  = load_csv('results/custom_cache_sweep.csv')
-
-# ── 그래프 1: 분포별 Hit Rate (32MB 고정) ────────────────
+# ── 그래프 1: 분포별 Hit Rate ─────────────────────────────
 frames = []
 if df_custom is not None:
-    frames.append(df_custom[df_custom['cache_mb'] == 32][['workload','hit_rate']])
+    frames.append(df_custom[df_custom['cache_mb']==32][['workload','hit_rate']])
 if df_bench is not None:
-    frames.append(df_bench[df_bench['cache_mb'] == 32][['workload','hit_rate']])
+    frames.append(df_bench[df_bench['cache_mb']==32][['workload','hit_rate']])
 
 if frames:
-    combined = pd.concat(frames)
-    combined = combined.sort_values('hit_rate', ascending=False).reset_index(drop=True)
-
+    combined = pd.concat(frames).sort_values(
+        'hit_rate', ascending=False).reset_index(drop=True)
     colors = plt.cm.RdYlGn(np.linspace(0.15, 0.9, len(combined)))
     bars = ax1.bar(combined['workload'], combined['hit_rate'],
                    color=colors, edgecolor='black', linewidth=0.6)
-
     for b, v in zip(bars, combined['hit_rate']):
-        ax1.text(b.get_x() + b.get_width()/2, b.get_height() + 0.8,
+        ax1.text(b.get_x()+b.get_width()/2, b.get_height()+0.8,
                  f'{v:.1f}%', ha='center', fontsize=8, fontweight='bold')
-
     ax1.set_ylabel('Cache Hit Rate (%)')
     ax1.set_ylim(0, 115)
     ax1.tick_params(axis='x', rotation=35)
@@ -46,44 +61,42 @@ if frames:
     ax1.legend(fontsize=8)
     ax1.grid(axis='y', alpha=0.3)
 else:
-    ax1.text(0.5, 0.5, 'No Data Available',
-             ha='center', va='center', fontsize=12, color='gray',
-             transform=ax1.transAxes)
+    ax1.text(0.5, 0.5, 'No Data', ha='center', va='center',
+             transform=ax1.transAxes, color='gray')
 
-ax1.set_title('Access Distribution vs Cache Hit Rate\n(Cache=32MB, N=100K keys, Reads=50K)')
+ax1.set_title('Access Distribution vs Cache Hit Rate\n(Cache=32MB)')
 
-# ── 그래프 2: 캐시 크기 vs Hit Rate (모든 분포) ──────────
-# 분포별 색상 및 마커 지정
+# ── 그래프 2: 캐시 크기 vs Hit Rate ──────────────────────
 styles = {
-    'Gaussian_s10': ('forestgreen',  '^', '-'),
-    'Gaussian_s05': ('limegreen',    'v', '-'),
-    'Zipfian_a10':  ('steelblue',    'o', '-'),
+    'Gaussian_s10': ('forestgreen',   '^', '-'),
+    'Gaussian_s05': ('limegreen',     'v', '-'),
+    'Zipfian_a10':  ('steelblue',     'o', '-'),
     'Zipfian_a05':  ('cornflowerblue','s', '-'),
-    'Hotspot_8020': ('orange',       'D', '-'),
-    'Hotspot_9505': ('red',          '*', '-'),
-    'Uniform':      ('gray',         'x', '--'),
-    'Sequential':   ('black',        '+', '--'),
+    'Hotspot_8020': ('orange',        'D', '-'),
+    'Hotspot_9505': ('red',           '*', '-'),
+    'Uniform':      ('gray',          'x', '--'),
+    'Sequential':   ('black',         '+', '--'),
+    'Bimodal':      ('purple',        'P', '-'),
+    'Latest':       ('brown',         'h', '-'),
 }
 
 has_data = False
-
 if df_sweep is not None:
-    for workload in df_sweep['workload'].unique():
-        d = df_sweep[df_sweep['workload'] == workload].sort_values('cache_mb')
-        if not d.empty:
-            color, marker, ls = styles.get(workload, ('purple', 'o', '-'))
-            ax2.plot(d['cache_mb'], d['hit_rate'],
-                     ls + marker, color=color, lw=2, ms=7,
-                     label=workload, markerfacecolor='white')
-            has_data = True
+    for wl in df_sweep['workload'].unique():
+        d = df_sweep[df_sweep['workload']==wl].sort_values('cache_mb')
+        color, marker, ls = styles.get(wl, ('purple','o','-'))
+        ax2.plot(d['cache_mb'], d['hit_rate'],
+                 ls+marker, color=color, lw=2, ms=7,
+                 label=wl, markerfacecolor='white')
+        has_data = True
 
 if df_bench is not None:
-    for wl, color, marker in [('Uniform','gray','x'), ('Sequential','black','+')]:
-        d = df_bench[df_bench['workload'] == wl].sort_values('cache_mb')
+    for wl, color, marker in [('Uniform','gray','x'),('Sequential','black','+')]:
+        d = df_bench[df_bench['workload']==wl].sort_values('cache_mb')
         if not d.empty:
             ax2.plot(d['cache_mb'], d['hit_rate'],
                      f'--{marker}', color=color, lw=2, ms=7,
-                     label=wl, markerfacecolor='white')
+                     label=f'{wl}(bench)', markerfacecolor='white')
             has_data = True
 
 if has_data:
@@ -94,16 +107,18 @@ if has_data:
     ax2.set_ylim(0, 100)
     ax2.grid(True, alpha=0.3)
     ax2.axhline(80, color='red', ls='--', lw=0.8, label='80% target')
-    ax2.legend(fontsize=8, loc='lower right')
+    ax2.legend(fontsize=7, loc='lower right')
 else:
-    ax2.text(0.5, 0.5, 'No Data Available',
-             ha='center', va='center', fontsize=12, color='gray',
-             transform=ax2.transAxes)
+    ax2.text(0.5, 0.5, 'No Data', ha='center', va='center',
+             transform=ax2.transAxes, color='gray')
 
-ax2.set_title('Cache Size vs Hit Rate (All Distributions)\n(N=100K keys, Reads=50K)')
+ax2.set_title('Cache Size vs Hit Rate (All Distributions)')
 
 plt.tight_layout()
+
+# ── 타임스탬프로 그래프 저장 (덮어쓰기 없음) ─────────────
+out_path = f'results/{ts}_cache_analysis.png'
 os.makedirs('results', exist_ok=True)
-plt.savefig('results/cache_analysis.png', bbox_inches='tight')
-print("✓ 저장: results/cache_analysis.png")
+plt.savefig(out_path, bbox_inches='tight')
+print(f"\n✓ 저장: {out_path}")
 plt.show()
