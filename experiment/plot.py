@@ -7,17 +7,20 @@ import glob
 
 plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
 
-# ── 타임스탬프 자동 감지 ──────────────────────────────────
+# ── 폴더 생성 ─────────────────────────────────────────────
+os.makedirs('results/graph',    exist_ok=True)
+os.makedirs('results/exp_data', exist_ok=True)
+
+# ── 타임스탬프 및 파일 로드 ───────────────────────────────
 def get_latest_timestamp():
-    ts_file = 'results/latest_timestamp.txt'
+    ts_file = 'results/exp_data/latest_timestamp.txt'
     if os.path.exists(ts_file):
         with open(ts_file) as f:
             return f.read().strip()
     return None
 
 def load_latest(pattern):
-    """패턴에 맞는 가장 최신 파일 로드"""
-    files = sorted(glob.glob(f'results/*{pattern}'))
+    files = sorted(glob.glob(f'results/exp_data/*{pattern}'))
     if not files:
         print(f"✗ 없음 (스킵): *{pattern}")
         return None, None
@@ -25,11 +28,10 @@ def load_latest(pattern):
     print(f"✓ 로드: {latest}")
     return pd.read_csv(latest), os.path.basename(latest)
 
-# ── 데이터 로드 ───────────────────────────────────────────
 ts = get_latest_timestamp() or "unknown"
-df_bench,  bench_name  = load_latest('_dbbench_results.csv')
-df_custom, custom_name = load_latest('_custom_dist.csv')
-df_sweep,  sweep_name  = load_latest('_custom_cache_sweep.csv')
+df_bench,  _ = load_latest('_dbbench_results.csv')
+df_custom, _ = load_latest('_custom_dist.csv')
+df_sweep,  _ = load_latest('_custom_cache_sweep.csv')
 
 print(f"\n실험 타임스탬프: {ts}")
 
@@ -68,16 +70,16 @@ ax1.set_title('Access Distribution vs Cache Hit Rate\n(Cache=32MB)')
 
 # ── 그래프 2: 캐시 크기 vs Hit Rate ──────────────────────
 styles = {
-    'Gaussian_s10': ('forestgreen',   '^', '-'),
-    'Gaussian_s05': ('limegreen',     'v', '-'),
-    'Zipfian_a10':  ('steelblue',     'o', '-'),
-    'Zipfian_a05':  ('cornflowerblue','s', '-'),
-    'Hotspot_8020': ('orange',        'D', '-'),
-    'Hotspot_9505': ('red',           '*', '-'),
-    'Uniform':      ('gray',          'x', '--'),
-    'Sequential':   ('black',         '+', '--'),
-    'Bimodal':      ('purple',        'P', '-'),
-    'Latest':       ('brown',         'h', '-'),
+    'Gaussian_s10': ('forestgreen',    '^', '-'),
+    'Gaussian_s05': ('limegreen',      'v', '-'),
+    'Zipfian_a10':  ('steelblue',      'o', '-'),
+    'Zipfian_a05':  ('cornflowerblue', 's', '-'),
+    'Hotspot_8020': ('orange',         'D', '-'),
+    'Hotspot_9505': ('red',            '*', '-'),
+    'Uniform':      ('gray',           'x', '--'),
+    'Sequential':   ('black',          '+', '--'),
+    'Bimodal':      ('purple',         'P', '-'),
+    'Latest':       ('brown',          'h', '-'),
 }
 
 has_data = False
@@ -116,9 +118,8 @@ ax2.set_title('Cache Size vs Hit Rate (All Distributions)')
 
 plt.tight_layout()
 
-# ── 타임스탬프로 그래프 저장 (덮어쓰기 없음) ─────────────
-out_path = f'results/{ts}_cache_analysis.png'
-os.makedirs('results', exist_ok=True)
+# ── graph 폴더에 저장 ─────────────────────────────────────
+out_path = f'results/graph/{ts}_cache_analysis.png'
 plt.savefig(out_path, bbox_inches='tight')
 print(f"\n✓ 저장: {out_path}")
 plt.show()

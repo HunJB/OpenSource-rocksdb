@@ -13,6 +13,13 @@ writer: writer.cpp
 reader: reader.cpp workload_gen.h
 	$(CXX) $(CXXFLAGS) reader.cpp -o reader $(LDFLAGS)
 
+# 빌드 결과물만 삭제 (실험 결과 보존)
 clean:
 	rm -f writer reader
-	rm -rf results/*.csv results/*.png
+
+# 실험 결과까지 삭제할 때만 사용
+cleanall:
+	rm -f writer reader
+	rm -rf results/graph/*.png
+	rm -rf results/exp_data/*.csv
+	rm -rf results/exp_data/latest_timestamp.txt

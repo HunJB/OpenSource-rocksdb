@@ -1,3 +1,6 @@
+// 실험 명령어: make clean && make && ./writer && ./reader && ./run_bench.sh && python3 plot.py
+// 실험 데이터 삭제 : make cleanall
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -78,21 +81,31 @@ CacheResult measure(size_t cache_bytes, const std::vector<int>& keys) {
 }
 
 int main() {
-    system("mkdir -p ./results");
+    // ── 폴더 생성 ──────────────────────────────────────
+    system("mkdir -p ./results/graph");
+    system("mkdir -p ./results/exp_data");
 
-    // ── 타임스탬프 (이번 실험의 모든 파일에 동일하게 사용) ──
     std::string ts = get_timestamp();
     std::cout << "\n실험 시작: " << ts << "\n";
 
-    WorkloadGenerator gen(NUM_KEYS);
+    // ── 시드를 현재 시간 기반으로 설정 ──────────────────
+    unsigned seed = (unsigned)std::time(nullptr);
+    std::cout << "랜덤 시드: " << seed << "\n";
 
-    // ── workload_gen.h에서 자동으로 전체 목록 가져옴 ───
+    WorkloadGenerator gen(NUM_KEYS, seed);
     auto workloads = gen.get_all_workloads(NUM_REQUESTS);
+    
+    // ── 실험 메타정보 저장 ────────────────────────────
+    std::ofstream meta("./results/exp_data/" + ts + "_meta.txt");
+    meta << "timestamp : " << ts   << "\n"
+         << "seed      : " << seed << "\n"
+         << "num_keys  : " << NUM_KEYS     << "\n"
+         << "num_req   : " << NUM_REQUESTS << "\n";
 
     std::cout << "총 " << workloads.size() << "개 분포 실험 예정\n";
 
-    // ── 실험 1: 분포별 Hit Rate (캐시 32MB 고정) ──────────
-    std::string csv1_path = "./results/" + ts + "_custom_dist.csv";
+    // ── 실험 1: 분포별 Hit Rate ────────────────────────
+    std::string csv1_path = "./results/exp_data/" + ts + "_custom_dist.csv";
     std::ofstream csv1(csv1_path);
     csv1 << "workload,cache_mb,hit,miss,hit_rate\n";
 
@@ -110,8 +123,8 @@ int main() {
              << r.rate() << "\n";
     }
 
-    // ── 실험 2: 캐시 크기 Sweep (모든 분포) ───────────────
-    std::string csv2_path = "./results/" + ts + "_custom_cache_sweep.csv";
+    // ── 실험 2: 캐시 크기 Sweep ────────────────────────
+    std::string csv2_path = "./results/exp_data/" + ts + "_custom_cache_sweep.csv";
     std::ofstream csv2(csv2_path);
     csv2 << "workload,cache_mb,hit,miss,hit_rate\n";
 
@@ -129,13 +142,11 @@ int main() {
         }
     }
 
-    // ── 타임스탬프 파일명 출력 ────────────────────────────
     std::cout << "\n✓ " << csv1_path << "\n";
     std::cout << "✓ " << csv2_path << "\n";
-    std::cout << "✓ plot.py 실행 시 자동으로 최신 파일 사용\n";
 
-    // ── 타임스탬프를 plot.py가 읽을 수 있도록 저장 ────────
-    std::ofstream ts_file("./results/latest_timestamp.txt");
+    // ── 타임스탬프 저장 ───────────────────────────────
+    std::ofstream ts_file("./results/exp_data/latest_timestamp.txt");
     ts_file << ts << "\n";
 
     return 0;
