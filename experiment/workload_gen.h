@@ -4,16 +4,31 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
+#include <ctime> 
 
 class WorkloadGenerator {
     int num_keys_;
     std::mt19937 rng_;
 
 public:
-    WorkloadGenerator(int num_keys, unsigned seed = 42)
+    //seed 값 랜덤 필요 / 고정 시드 -> sedd = 42등 상수로 변경
+    WorkloadGenerator(int num_keys, unsigned seed = (unsigned)std::time(nullptr))
         : num_keys_(num_keys), rng_(seed) {}
 
+
     // ── 분포 함수들 ───────────────────────────────────────
+
+    /*
+    workload 추가시...
+    **workload_gen.h 에 함수 추가**
+    std::vector<int> 새분포이름(int n, 파라미터) {
+    // 분포 구현
+        std::vector<int> keys(n);
+    // ...
+    return keys;
+        }
+    
+    */
 
     // 1. 랜덤
     std::vector<int> uniform(int n) {
@@ -115,7 +130,7 @@ public:
             {"Hotspot_9505", hotspot(n,  0.05, 0.95)},
             {"Bimodal",      bimodal(n)},
             {"Latest",       latest(n)},
-            // ↑ 새 분포 추가 시 여기에만 한 줄 추가
+            //{"새분포이름",    새분포이름(n)}, ← 이 한 줄만 추가
         };
     }
 };

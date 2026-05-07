@@ -46,6 +46,7 @@ styles = {
     'Sequential':   ('black',          '+', '--'),
     'Bimodal':      ('purple',         'P', '-'),
     'Latest':       ('brown',          'h', '-'),
+    #'새분포이름':   ('색상',           '마커', '-'), ← 추가
 }
 
 def draw_graphs(df_dist, df_sweep, df_bench, title_suffix, filename):
