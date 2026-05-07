@@ -4,34 +4,36 @@ import matplotlib.ticker as mticker
 import numpy as np
 import os
 import glob
+import matplotlib
+matplotlib.use('Agg')
 
-plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
-
-# ── 폴더 생성 ─────────────────────────────────────────────
-os.makedirs('results/graph',    exist_ok=True)
 os.makedirs('results/exp_data', exist_ok=True)
+os.makedirs('results/graph',    exist_ok=True)
 
-# ── 타임스탬프 및 파일 로드 ───────────────────────────────
-def get_latest_timestamp():
-    ts_file = 'results/exp_data/latest_timestamp.txt'
-    if os.path.exists(ts_file):
-        with open(ts_file) as f:
-            return f.read().strip()
+# ── 최신 실험 폴더 확인 ───────────────────────────────────
+def get_latest_run():
+    f = 'results/exp_data/latest_run.txt'
+    if os.path.exists(f):
+        with open(f) as fp:
+            return fp.read().strip()
     return None
 
-def load_latest(pattern):
-    files = sorted(glob.glob(f'results/exp_data/*{pattern}'))
-    if not files:
-        print(f"✗ 없음 (스킵): *{pattern}")
-        return None, None
-    latest = files[-1]
-    print(f"✓ 로드: {latest}")
-    return pd.read_csv(latest), os.path.basename(latest)
+ts      = get_latest_run() or "unknown"
+run_dir = f'results/exp_data/run_{ts}'
+graph_dir = f'results/graph/run_{ts}'
+os.makedirs(graph_dir, exist_ok=True)
 
-ts = get_latest_timestamp() or "unknown"
-df_bench,  _ = load_latest('_dbbench_results.csv')
-df_custom, _ = load_latest('_custom_dist.csv')
-df_sweep,  _ = load_latest('_custom_cache_sweep.csv')
+def load_csv(path):
+    if os.path.exists(path):
+        print(f"✓ 로드: {path}")
+        return pd.read_csv(path)
+    print(f"✗ 없음 (스킵): {path}")
+    return None
+
+# ── 해당 실험 폴더에서만 로드 ─────────────────────────────
+df_custom = load_csv(f'{run_dir}/custom_dist.csv')
+df_sweep  = load_csv(f'{run_dir}/custom_cache_sweep.csv')
+df_bench  = load_csv(f'{run_dir}/dbbench_results.csv')
 
 print(f"\n실험 타임스탬프: {ts}")
 
@@ -39,6 +41,19 @@ print(f"\n실험 타임스탬프: {ts}")
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 fig.suptitle(f'RocksDB Block Cache Hit Rate Analysis\n({ts})',
              fontsize=13, fontweight='bold')
+
+styles = {
+    'Gaussian_s10': ('forestgreen',    '^', '-'),
+    'Gaussian_s05': ('limegreen',      'v', '-'),
+    'Zipfian_a10':  ('steelblue',      'o', '-'),
+    'Zipfian_a05':  ('cornflowerblue', 's', '-'),
+    'Hotspot_8020': ('orange',         'D', '-'),
+    'Hotspot_9505': ('red',            '*', '-'),
+    'Uniform':      ('gray',           'x', '--'),
+    'Sequential':   ('black',          '+', '--'),
+    'Bimodal':      ('purple',         'P', '-'),
+    'Latest':       ('brown',          'h', '-'),
+}
 
 # ── 그래프 1: 분포별 Hit Rate ─────────────────────────────
 frames = []
@@ -65,23 +80,9 @@ if frames:
 else:
     ax1.text(0.5, 0.5, 'No Data', ha='center', va='center',
              transform=ax1.transAxes, color='gray')
-
 ax1.set_title('Access Distribution vs Cache Hit Rate\n(Cache=32MB)')
 
 # ── 그래프 2: 캐시 크기 vs Hit Rate ──────────────────────
-styles = {
-    'Gaussian_s10': ('forestgreen',    '^', '-'),
-    'Gaussian_s05': ('limegreen',      'v', '-'),
-    'Zipfian_a10':  ('steelblue',      'o', '-'),
-    'Zipfian_a05':  ('cornflowerblue', 's', '-'),
-    'Hotspot_8020': ('orange',         'D', '-'),
-    'Hotspot_9505': ('red',            '*', '-'),
-    'Uniform':      ('gray',           'x', '--'),
-    'Sequential':   ('black',          '+', '--'),
-    'Bimodal':      ('purple',         'P', '-'),
-    'Latest':       ('brown',          'h', '-'),
-}
-
 has_data = False
 if df_sweep is not None:
     for wl in df_sweep['workload'].unique():
@@ -113,13 +114,11 @@ if has_data:
 else:
     ax2.text(0.5, 0.5, 'No Data', ha='center', va='center',
              transform=ax2.transAxes, color='gray')
-
 ax2.set_title('Cache Size vs Hit Rate (All Distributions)')
 
 plt.tight_layout()
 
-# ── graph 폴더에 저장 ─────────────────────────────────────
-out_path = f'results/graph/{ts}_cache_analysis.png'
+# ── 실험별 폴더에 그래프 저장 ─────────────────────────────
+out_path = f'{graph_dir}/cache_analysis.png'
 plt.savefig(out_path, bbox_inches='tight')
 print(f"\n✓ 저장: {out_path}")
-plt.show()

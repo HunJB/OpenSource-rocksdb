@@ -20,6 +20,7 @@ clean:
 # 실험 결과까지 삭제할 때만 사용
 cleanall:
 	rm -f writer reader
-	rm -rf results/graph/*.png
-	rm -rf results/exp_data/*.csv
-	rm -rf results/exp_data/latest_timestamp.txt
+	rm -rf results/graph/run_*/
+	rm -rf results/exp_data/run_*/
+	rm -f  results/exp_data/latest_run.txt
+	rm -f  results/exp_data/*_meta.txt

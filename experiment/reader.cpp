@@ -81,31 +81,26 @@ CacheResult measure(size_t cache_bytes, const std::vector<int>& keys) {
 }
 
 int main() {
-    // ── 폴더 생성 ──────────────────────────────────────
-    system("mkdir -p ./results/graph");
-    system("mkdir -p ./results/exp_data");
+    std::string ts      = get_timestamp();
+    std::string run_dir = "./results/exp_data/run_" + ts;
+    std::string graph_dir = "./results/graph/run_" + ts;
 
-    std::string ts = get_timestamp();
+    // ── 실험별 폴더 생성 ──────────────────────────────────
+    system(("mkdir -p " + run_dir).c_str());
+    system(("mkdir -p " + graph_dir).c_str());
+
     std::cout << "\n실험 시작: " << ts << "\n";
+    std::cout << "데이터 폴더: " << run_dir << "\n";
 
-    // ── 시드를 현재 시간 기반으로 설정 ──────────────────
     unsigned seed = (unsigned)std::time(nullptr);
     std::cout << "랜덤 시드: " << seed << "\n";
 
     WorkloadGenerator gen(NUM_KEYS, seed);
     auto workloads = gen.get_all_workloads(NUM_REQUESTS);
-    
-    // ── 실험 메타정보 저장 ────────────────────────────
-    std::ofstream meta("./results/exp_data/" + ts + "_meta.txt");
-    meta << "timestamp : " << ts   << "\n"
-         << "seed      : " << seed << "\n"
-         << "num_keys  : " << NUM_KEYS     << "\n"
-         << "num_req   : " << NUM_REQUESTS << "\n";
-
     std::cout << "총 " << workloads.size() << "개 분포 실험 예정\n";
 
-    // ── 실험 1: 분포별 Hit Rate ────────────────────────
-    std::string csv1_path = "./results/exp_data/" + ts + "_custom_dist.csv";
+    // ── 실험 1: 분포별 Hit Rate ────────────────────────────
+    std::string csv1_path = run_dir + "/custom_dist.csv";
     std::ofstream csv1(csv1_path);
     csv1 << "workload,cache_mb,hit,miss,hit_rate\n";
 
@@ -123,8 +118,8 @@ int main() {
              << r.rate() << "\n";
     }
 
-    // ── 실험 2: 캐시 크기 Sweep ────────────────────────
-    std::string csv2_path = "./results/exp_data/" + ts + "_custom_cache_sweep.csv";
+    // ── 실험 2: 캐시 크기 Sweep ───────────────────────────
+    std::string csv2_path = run_dir + "/custom_cache_sweep.csv";
     std::ofstream csv2(csv2_path);
     csv2 << "workload,cache_mb,hit,miss,hit_rate\n";
 
@@ -142,12 +137,20 @@ int main() {
         }
     }
 
+    // ── 메타정보 저장 ─────────────────────────────────────
+    std::ofstream meta(run_dir + "/meta.txt");
+    meta << "timestamp  : " << ts   << "\n"
+         << "seed       : " << seed << "\n"
+         << "num_keys   : " << NUM_KEYS     << "\n"
+         << "num_req    : " << NUM_REQUESTS << "\n"
+         << "graph_dir  : " << graph_dir   << "\n";
+
+    // ── 최신 실험 폴더 기록 ───────────────────────────────
+    std::ofstream latest("./results/exp_data/latest_run.txt");
+    latest << ts << "\n";
+
     std::cout << "\n✓ " << csv1_path << "\n";
     std::cout << "✓ " << csv2_path << "\n";
-
-    // ── 타임스탬프 저장 ───────────────────────────────
-    std::ofstream ts_file("./results/exp_data/latest_timestamp.txt");
-    ts_file << ts << "\n";
 
     return 0;
 }
