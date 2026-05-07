@@ -73,7 +73,7 @@ public:
         return keys;
     }
 
-    // 6. bimodal
+    // 6. bimodal(이중 피크)
     std::vector<int> bimodal(int n, double mean1_r=0.25, double mean2_r=0.75,
                               double std_r=0.05) {
         std::normal_distribution<double> d1(num_keys_*mean1_r, num_keys_*std_r);
@@ -88,7 +88,7 @@ public:
         return keys;
     }
 
-    // 7. latest
+    // 7. latest(시간 지역성)
     std::vector<int> latest(int n, double skewness=0.8) {
         std::uniform_real_distribution<double> u(0.0, 1.0);
         std::vector<int> keys(n);
