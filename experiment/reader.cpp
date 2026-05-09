@@ -1,5 +1,6 @@
 // 실험 명령어: make clean && make && ./writer && ./reader && ./run_bench.sh && python3 plot.py
 // 실험 데이터 삭제 : make cleanall
+// 수정 : 실험결과를 같은위치에 생성시키기 위한 타임스탬프 인자만 수정
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +24,7 @@ const int   NUM_KEYS     = 100000;
 const int   NUM_REQUESTS = 50000;
 const char* DB_PATH      = "/tmp/rocksdb_exp_db";
 
-// ── 타임스탬프 생성 ────────────────────────────────────────
+// ── 타임스탬프 생성 (인자가 없을 경우를 대비한 기본 함수) ────────────────────────
 std::string get_timestamp() {
     std::time_t t = std::time(nullptr);
     std::tm* tm   = std::localtime(&t);
@@ -80,14 +81,21 @@ CacheResult measure(size_t cache_bytes, const std::vector<int>& keys) {
     };
 }
 
-int main() {
-    std::string ts      = get_timestamp();
+int main(int argc, char** argv) {
+    // ── 타임스탬프 결정: 명령행 인자가 있으면(쉘에서 전달 시) 그것을 사용 ──
+    std::string ts;
+    if (argc > 1) {
+        ts = argv[1];
+    } else {
+        ts = get_timestamp();
+    }
+
     std::string run_dir = "./results/exp_data/run_" + ts;
     std::string graph_dir = "./results/graph/run_" + ts;
 
     // ── 실험별 폴더 생성 ──────────────────────────────────
-    system(("mkdir -p " + run_dir).c_str());
-    system(("mkdir -p " + graph_dir).c_str());
+    if (system(("mkdir -p " + run_dir).c_str())) {}
+    if (system(("mkdir -p " + graph_dir).c_str())) {}
 
     std::cout << "\n실험 시작: " << ts << "\n";
     std::cout << "데이터 폴더: " << run_dir << "\n";
