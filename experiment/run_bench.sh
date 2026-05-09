@@ -1,4 +1,4 @@
-cat > ~/rocksdb/experiment/run_bench.sh << 'EOF'
+#수정 : adv도 수행하도록 수정
 #!/bin/bash
 
 ROCKSDB_DIR="${HOME}/rocksdb"
@@ -75,5 +75,3 @@ done
 
 echo ""
 echo "✓ 결과 저장: $RESULT"
-EOF
-chmod +x ~/rocksdb/experiment/run_bench.sh
