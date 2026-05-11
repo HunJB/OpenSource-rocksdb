@@ -1,7 +1,7 @@
 # 수정 : adv 통합 추가 수행
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.ticker as. mticker
+import matplotlib.ticker as mticker
 import numpy as np
 import os
 import glob
