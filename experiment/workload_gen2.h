@@ -4,31 +4,16 @@
 #include <string>
 #include <cmath>
 #include <algorithm>
-#include <ctime> 
 
 class WorkloadGenerator {
     int num_keys_;
     std::mt19937 rng_;
 
 public:
-    //seed 값 랜덤 필요 / 고정 시드 -> sedd = 42등 상수로 변경
-    WorkloadGenerator(int num_keys, unsigned seed = (unsigned)std::time(nullptr))
+    WorkloadGenerator(int num_keys, unsigned seed = 42)
         : num_keys_(num_keys), rng_(seed) {}
 
-
     // ── 분포 함수들 ───────────────────────────────────────
-
-    /*
-    workload 추가시...
-    **workload_gen.h 에 함수 추가**
-    std::vector<int> 새분포이름(int n, 파라미터) {
-    // 분포 구현
-        std::vector<int> keys(n);
-    // ...
-    return keys;
-        }
-    
-    */
 
     // 1. 랜덤
     std::vector<int> uniform(int n) {
@@ -114,9 +99,8 @@ public:
         return keys;
     }
 
-    // 8. moving_gaussian (전반부·후반부 피크가 다른 가우시안)
-    std::vector<int> moving_gaussian(int n, double mean_1=0.3, double mean_2=0.7,
-                                     double std_r=0.1) {
+    // 8. 가변 가우시안
+    std::vector<int> moving_gaussian(int n, double mean_1=0.3, double mean_2=0.7, double std_r=0.1) {
         std::normal_distribution<double> d1(num_keys_*mean_1, num_keys_*std_r);
         std::normal_distribution<double> d2(num_keys_*mean_2, num_keys_*std_r);
         std::vector<int> keys;
@@ -132,13 +116,9 @@ public:
         return keys;
     }
 
-    // 정적 workload 목록 (분포가 시간에 따라 변하지 않음)
-    // 새 정적 분포 추가 시 이 함수에만 한 줄 추가
-    std::vector<std::pair<std::string, std::vector<int>>>
-    get_all_workloads(int n) {
-        return get_static_workloads(n);
-    }
-
+    // 모든 workload를 자동으로 반환 ────────────
+    // workload_gen.h에 분포를 추가하면 여기에만 추가하면 됨
+    // reader.cpp는 수정 불필요
     std::vector<std::pair<std::string, std::vector<int>>>
     get_static_workloads(int n) {
         return {
@@ -152,20 +132,18 @@ public:
             {"Hotspot_9505", hotspot(n,  0.05, 0.95)},
             {"Bimodal",      bimodal(n)},
             {"Latest",       latest(n)},
-            //{"새분포이름",    새분포이름(n)}, ← 이 한 줄만 추가
+            // ↑ 새 분포 추가 시 여기에만 한 줄 추가
         };
     }
 
-    // 동적 workload 목록 (배치 내에서 접근 패턴이 이동하는 분포)
-    // 새 동적 분포 추가 시 이 함수에만 한 줄 추가
     std::vector<std::pair<std::string, std::vector<int>>>
     get_dynamic_workloads(int n) {
         return {
-            {"moving_gaussian030710", moving_gaussian(n, 0.3, 0.7, 0.10)},
-            {"moving_gaussian020810", moving_gaussian(n, 0.2, 0.8, 0.10)},
-            {"moving_gaussian030705", moving_gaussian(n, 0.3, 0.7, 0.05)},
-            {"moving_gaussian020805", moving_gaussian(n, 0.2, 0.8, 0.05)},
-            //{"새동적분포이름",          새동적분포이름(n)}, ← 이 한 줄만 추가
+            {"moving_gaussian030710",   moving_gaussian(n, 0.3, 0.7, 0.10)},
+            {"moving_gaussian020810",   moving_gaussian(n, 0.2, 0.8, 0.10)},
+            {"moving_gaussian030705",   moving_gaussian(n, 0.3, 0.7, 0.05)},
+            {"moving_gaussian020805",   moving_gaussian(n, 0.2, 0.8, 0.05)},
+            // ↑ 새 분포 추가 시 여기에만 한 줄 추가
         };
     }
 };

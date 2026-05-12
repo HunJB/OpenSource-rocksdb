@@ -24,6 +24,8 @@ using namespace ROCKSDB_NAMESPACE;
 
 const int NUM_KEYS     = 100000;
 const int NUM_REQUESTS = 50000;
+const int BATCH        = 5000;   // 배치 1개 크기 (NUM_REQUESTS / BATCH_NUM)
+const int BATCH_NUM    = 10;     // 배치 수 (BATCH * BATCH_NUM == NUM_REQUESTS)
 
 // 병렬 실행 시 run_experiments.sh가 READER_DB_PATH를 슬롯별로 지정
 // 미설정 시 기본 경로 사용
@@ -151,6 +153,81 @@ int main() {
                   << r.rate()  << "%\n";
         csv1 << name << ",32," << r.hit << "," << r.miss << ","
              << r.rate() << "\n";
+    }
+
+    // ── 실험 0: 분포 시각화 (키 빈도 히스토그램) ──────────
+    // 정적 워크로드의 50개 구간별 접근 빈도를 showdist.csv에 저장
+    {
+        const int BUCKETS   = 50;
+        const int BUCKET_SZ = NUM_KEYS / BUCKETS;
+        std::ofstream csv0(run_dir + "/showdist.csv");
+        csv0 << "workload";
+        for (int i = 0; i < BUCKETS; i++) csv0 << ",area" << i;
+        csv0 << "\n";
+
+        for (auto& [name, keys] : workloads) {
+            int freq[BUCKETS] = {};
+            for (int k : keys) freq[k / BUCKET_SZ]++;
+            csv0 << name;
+            for (int i = 0; i < BUCKETS; i++) csv0 << "," << freq[i];
+            csv0 << "\n";
+        }
+    }
+
+    // ── 실험 2-1: 동적 분포별 Hit Rate (32MB 고정) ────────
+    auto dynamic_workloads = gen.get_dynamic_workloads(NUM_REQUESTS);
+
+    std::ofstream csv_md(run_dir + "/custom_movedist.csv");
+    csv_md << "workload,cache_mb,hit,miss,hit_rate\n";
+
+    std::cout << "\n[실험 2-1] 동적 분포별 Hit Rate (Cache=32MB)\n";
+    std::cout << std::string(55, '=') << "\n";
+
+    for (auto& [name, keys] : dynamic_workloads) {
+        CacheResult r = measure(32 * 1024 * 1024, keys);
+        std::cout << std::left  << std::setw(26) << name
+                  << " Hit="   << std::setw(8)  << r.hit
+                  << " Miss="  << std::setw(8)  << r.miss
+                  << " Rate="  << std::fixed << std::setprecision(2)
+                  << r.rate()  << "%\n";
+        csv_md << name << ",32," << r.hit << "," << r.miss << ","
+               << r.rate() << "\n";
+    }
+
+    // ── 실험 2-2: 동적 분포 배치별 Hit Rate 시계열 ────────
+    // 동일 DB 인스턴스로 BATCH_NUM개 배치를 순서대로 측정하여
+    // 접근 패턴 이동에 따른 캐시 히트율 변화를 관찰
+    std::ofstream csv_mdb(run_dir + "/custom_movedist_batch.csv");
+    csv_mdb << "workload,cache_mb,batch,hit,miss,hit_rate\n";
+
+    std::cout << "\n[실험 2-2] 동적 분포 배치별 Hit Rate 시계열 (Cache=32MB)\n";
+    std::cout << std::string(55, '=') << "\n";
+
+    for (auto& [name, keys] : dynamic_workloads) {
+        auto db = open_db(32 * 1024 * 1024);
+        if (!db) continue;
+
+        ReadOptions ro;
+        ro.fill_cache = true;
+        std::string val;
+        std::cout << "\n  [" << name << "]\n";
+
+        for (int b = 0; b < BATCH_NUM; b++) {
+            db->GetOptions().statistics->Reset();
+            for (int j = 0; j < BATCH; j++)
+                db->Get(ro, make_key(keys[b * BATCH + j]), &val);
+
+            auto* st  = db->GetOptions().statistics.get();
+            uint64_t h = st->getTickerCount(BLOCK_CACHE_HIT);
+            uint64_t ms = st->getTickerCount(BLOCK_CACHE_MISS);
+            double   rt = (h + ms == 0) ? 0.0 : 100.0 * h / (h + ms);
+
+            std::cout << "    batch " << std::setw(2) << b
+                      << " → " << std::fixed << std::setprecision(2)
+                      << rt << "%\n";
+            csv_mdb << name << ",32," << b << "," << h << "," << ms << ","
+                    << rt << "\n";
+        }
     }
 
     // ── 메타정보 저장 ─────────────────────────────────────
