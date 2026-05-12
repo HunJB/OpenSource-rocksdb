@@ -159,7 +159,7 @@ for TARGET in "${TARGETS[@]}"; do
     # ── 이 단계의 통계 취합 ────────────────────────────────
     echo ""
     echo "  [취합] n=${TARGET} 통계 생성 중..."
-    python3 aggregate.py
+    python3 aggregate.py "${TARGET}"
     if [ $? -eq 0 ]; then
         echo "  ✓ n=${TARGET} 통계 완료"
     else

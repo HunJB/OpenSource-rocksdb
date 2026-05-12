@@ -1,4 +1,4 @@
-# 수정 : adv 통합 추가 수행
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -15,6 +15,9 @@ matplotlib.rcParams['axes.unicode_minus'] = False
 
 # ── 폴더 생성 ─────────────────────────────────────────────
 os.makedirs('results/aggregated', exist_ok=True)
+
+# argv[1]: step_experiments.sh가 전달하는 마일스톤 번호 (없으면 총 실험 수 사용)
+MILESTONE = sys.argv[1] if len(sys.argv) > 1 else None
 
 def load_all(pattern):
     files = sorted(glob.glob(f'results/exp_data/run_*/{pattern}'))
@@ -54,6 +57,7 @@ def aggregate_and_plot(dist_pattern, sweep_pattern, suffix, title_label):
     
     if dist_all is None: return
     n_runs = len(dist_files)
+    label = MILESTONE if MILESTONE is not None else str(n_runs)
 
     # 평균/표준편차 계산
     dist_agg = dist_all.groupby(['workload', 'cache_mb'])['hit_rate'].agg(['mean', 'std', 'min', 'max', 'count']).reset_index()
@@ -61,7 +65,7 @@ def aggregate_and_plot(dist_pattern, sweep_pattern, suffix, title_label):
 
     # ── 그래프 생성 (3개 서브플롯 구조) ──────────────────────────
     fig, axes = plt.subplots(1, 3, figsize=(21, 6))
-    fig.suptitle(f'RocksDB {title_label} - Aggregated Analysis (n={n_runs})', fontsize=14, fontweight='bold')
+    fig.suptitle(f'RocksDB {title_label} - Aggregated Analysis (마일스톤={label}, 총 실험={n_runs}회)', fontsize=14, fontweight='bold')
 
     # 1. 분포별 평균 Hit Rate (32MB)
     ax1 = axes[0]
@@ -106,7 +110,7 @@ def aggregate_and_plot(dist_pattern, sweep_pattern, suffix, title_label):
     ax3.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    out_path = f'results/aggregated/aggregated_analysis_{suffix}_n{n_runs}.png'
+    out_path = f'results/aggregated/aggregated_analysis_{suffix}_n{label}.png'
     plt.savefig(out_path, bbox_inches='tight')
     plt.close()
     print(f"  ✓ 저장 완료: {out_path}")
