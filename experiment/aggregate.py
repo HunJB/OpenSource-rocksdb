@@ -8,6 +8,10 @@ import glob
 import datetime
 import matplotlib
 matplotlib.use('Agg')
+import matplotlib.font_manager as fm
+fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf')
+matplotlib.rcParams['font.family'] = 'NanumBarunGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
 
 # ── 폴더 생성 ─────────────────────────────────────────────
 os.makedirs('results/aggregated', exist_ok=True)

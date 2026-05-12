@@ -7,6 +7,10 @@ import os
 import sys
 import matplotlib
 matplotlib.use('Agg')
+import matplotlib.font_manager as fm
+fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf')
+matplotlib.rcParams['font.family'] = 'NanumBarunGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
 
 # 디렉토리 생성
 os.makedirs('results/exp_data', exist_ok=True)

@@ -7,6 +7,10 @@ import numpy as np
 import os
 import matplotlib
 matplotlib.use('Agg')
+import matplotlib.font_manager as fm
+fm.fontManager.addfont('/usr/share/fonts/truetype/nanum/NanumBarunGothic.ttf')
+matplotlib.rcParams['font.family'] = 'NanumBarunGothic'
+matplotlib.rcParams['axes.unicode_minus'] = False
 
 plt.rcParams.update({'figure.dpi': 150, 'font.size': 10})
 
