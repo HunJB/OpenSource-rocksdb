@@ -14,5 +14,6 @@ __pycache__/
 # 실험 결과 (매번 바뀜)
 experiment/results/
 experiment/reader
+experiment/reader_adv
 experiment/writer
 experiment/experiment
