@@ -42,7 +42,7 @@ Options make_options(size_t cache_bytes) {
 
 void populate(DB* db) {
     WriteOptions wo;
-    wo.ㅊㅇ  = true;
+    wo.disableWAL = true;
     std::string val(VALUE_SIZE, 'v');
     for (int i = 0; i < NUM_KEYS; i++)
         db->Put(wo, make_key(i), val);
