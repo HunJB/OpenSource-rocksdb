@@ -1,0 +1,9 @@
+# 실험 결과 (로그, 그래프) — 디렉토리 구조는 유지
+results/logs/*
+!results/logs/.gitkeep
+results/aggregated/*
+!results/aggregated/.gitkeep
+
+# Python 캐시
+__pycache__/
+*.pyc
