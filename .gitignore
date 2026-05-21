@@ -17,3 +17,6 @@ experiment/reader
 experiment/reader_adv
 experiment/writer
 experiment/experiment
+# Claude Code 설정 파일
+CLAUDE.md
+**/CLAUDE.md
