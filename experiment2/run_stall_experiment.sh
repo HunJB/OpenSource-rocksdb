@@ -64,14 +64,19 @@ EXPS=(
     # 8. Direct I/O (OS 페이지 캐시를 우회하여 디스크 직접 쓰기)
     "exp8_direct_io|--threads=4 --use_direct_io_for_flush_and_compaction=true"
     
-    # 9. Sync Commit (모든 쓰기마다 fsync 강제, 최대 60초만 실행)
-    "exp9_sync_commit|--threads=4 --sync=1 --duration=60"
+    # 9. Sync Commit (모든 쓰기마다 fsync 강제)
+    # ※ fsync 지연(1~5ms/op)으로 인해 300초에 약 0.5~2GB 기록 → 5GB 미달 가능하나,
+    #    sync 쓰기 특성상 --num 기반 10GB 달성은 수시간 소요되므로 300초를 상한으로 설정
+    "exp9_sync_commit|--threads=4 --sync=1 --duration=300"
 )
 # ────────────────────────────────────────────────────────
 
 mkdir -p "${LOG_DIR}"
 mkdir -p "${AGG_DIR}"
 
+# 총 쓰기 목표: NUM_KEYS × VAL_SIZE = 10,000,000 × 1KB ≈ 9.5GB
+# 스레드 수와 무관하게 전체 합산 쓰기량이 동일하도록 per_thread_num = NUM_KEYS / thread_count 로 분배
+# → Write Stall이 의미있게 관찰되려면 5GB 이상 / 평균 10GB 쓰기가 필요 (교수님 권고)
 NUM_KEYS=10000000
 VAL_SIZE=1024
 
