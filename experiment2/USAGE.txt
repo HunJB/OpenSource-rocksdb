@@ -10,22 +10,30 @@
 Write Stall(쓰기 지연)은 RocksDB에 쓰기 요청이 너무 빠르게 들어올 때
 내부적으로 쓰기 속도를 강제로 늦추거나 멈추는 현상이다.
 
-주로 두 가지 원인으로 발생한다.
+주로 두 가지 메커니즘으로 발생한다.
 
-  원인 1. Level 0 파일 누적
+  메커니즘 1. Level 0 파일 누적
     MemTable이 가득 차면 Flush가 발생하여 Level 0 SST 파일이 생성된다.
     Compaction이 이를 따라가지 못하면 L0 파일 수가 임계값을 초과하여
     Write Stall이 발생한다.
     - level0_slowdown_writes_trigger (기본 20): 이 수를 넘으면 쓰기 속도 감소
     - level0_stop_writes_trigger     (기본 36): 이 수를 넘으면 쓰기 완전 중단
 
-  원인 2. Pending Compaction 바이트 누적
+  메커니즘 2. Pending Compaction 바이트 누적
     Compaction되지 않은 데이터 총량이 임계값을 초과할 때 발생한다.
     - soft_pending_compaction_bytes_limit (기본 64GB): 초과 시 속도 감소
     - hard_pending_compaction_bytes_limit (기본 256GB): 초과 시 쓰기 중단
 
-이 실험은 다양한 RocksDB 설정 조합에서 쓰기 처리량(OPS)이
-시간에 따라 어떻게 변화하는지를 측정하고 비교한다.
+이 experiment2/ 폴더에는 두 가지 실험 세트가 존재한다.
+
+  [세트 A] 다양한 설정 탐색 실험 (run_stall_experiment.sh)
+    10가지 서로 다른 RocksDB 설정에서 쓰기 처리량을 측정한다.
+    Compaction 전략, Direct I/O, Sync 쓰기 등 다양한 요소를 포함한다.
+
+  [세트 B] 3요소 비교 실험 (run_3factor_experiment.sh)  ← 주요 연구 목적
+    "Input 과다 / MemTable 크기 / L0 수용 한계" 세 요소 중
+    어떤 요소가 Write Stall을 가장 심하게 유발하는지 정량 비교한다.
+    각 시나리오를 3회 반복 측정하여 통계적 신뢰도를 확보한다.
 
 
 ================================================================
@@ -33,15 +41,20 @@ Write Stall(쓰기 지연)은 RocksDB에 쓰기 요청이 너무 빠르게 들�
 ================================================================
 
 experiment2/
-├── run_stall_experiment.sh   # 실험 자동화 쉘 스크립트
-├── aggregate_stalls.py       # 실험 결과 시각화 파이썬 스크립트
+├── run_stall_experiment.sh   # [세트 A] 다양한 설정 탐색 실험 스크립트
+├── aggregate_stalls.py       # [세트 A] 결과 시각화 (최신 로그 1개 기준)
+├── run_3factor_experiment.sh # [세트 B] 3요소 비교 실험 스크립트  ← 신규
+├── aggregate_3factor.py      # [세트 B] 결과 시각화 (다중 측정 평균)  ← 신규
 ├── USAGE.txt                 # 이 파일
 ├── .gitignore                # 로그·그래프 git 제외 설정
 └── results/
-    ├── logs/                 # 실험 로그 저장 위치 (자동 생성)
-    │   └── exp0_default_20260521_120000.log  (예시)
-    └── aggregated/           # 시각화 그래프 저장 위치 (자동 생성)
-        └── rocksdb_dashboard_20260521_120500.png  (예시)
+    ├── logs/                 # 모든 실험 로그 공유 저장 위치
+    │   ├── exp0_baseline_20260525_120000.log        (세트 B 예시)
+    │   ├── exp0_baseline_20260525_130000.log        (세트 B 반복 2회차)
+    │   └── exp0_default_20260521_120000.log         (세트 A 예시)
+    └── aggregated/           # 시각화 그래프 저장 위치
+        ├── rocksdb_dashboard_20260521_120500.png    (세트 A 출력)
+        └── rocksdb_3factor_20260525_140000.png      (세트 B 출력)
 
 실험 로그와 그래프는 .gitignore에 의해 git에 올라가지 않는다.
 results/ 폴더 구조 자체는 .gitkeep 파일로 git에 유지된다.
@@ -55,181 +68,216 @@ results/ 폴더 구조 자체는 .gitkeep 파일로 git에 유지된다.
 ================================================================
 
 ------------------------------------------------------------
-3-1. run_stall_experiment.sh
+3-1. run_stall_experiment.sh  [세트 A]
 ------------------------------------------------------------
 
 역할:
-  10개의 시나리오를 순서대로 실행하는 자동화 스크립트이다.
-  각 시나리오는 db_bench(RocksDB 공식 벤치마크 도구)를 호출하고,
-  그 출력을 results/logs/ 아래에 로그 파일로 저장한다.
-  모든 시나리오 완료 후 aggregate_stalls.py를 자동 호출한다.
+  10가지 서로 다른 RocksDB 설정 시나리오를 순서대로 실행한다.
+  각 시나리오를 1회 측정하고 aggregate_stalls.py를 자동 호출한다.
 
 핵심 변수:
-  ROCKSDB_DIR  = ~/rocksdb             (RocksDB 루트)
-  DB_BENCH     = ~/rocksdb/db_bench    (릴리스 빌드 바이너리)
-  BASE_DB      = /tmp/rocksdb_stall_exp_db  (실험용 임시 DB 경로)
-  NUM_KEYS     = 10,000,000            (총 쓰기 건수)
-  VAL_SIZE     = 1,024 bytes (1KB)     (키당 값 크기)
-
-db_bench 공통 옵션:
-  --benchmarks=fillrandom      랜덤 키 순서로 쓰기 벤치마크 수행
-  --num=<per_thread_num>       스레드당 쓰기 건수 (NUM_KEYS / thread_count)
-  --value_size=1024            값 크기 1KB
-  --stats_interval_seconds=1   1초마다 처리량 통계를 로그에 출력
-                               → aggregate_stalls.py가 이 줄을 파싱한다
-
-스레드당 쓰기 수 계산 방식:
-  per_thread_num = NUM_KEYS / thread_count
-  예) threads=4 이면 스레드당 2,500,000건 → 합계 10,000,000건
+  NUM_KEYS = 10,000,000  (총 쓰기 건수)
+  VAL_SIZE = 1,024 bytes (키당 값 크기)
+  → 총 쓰기 목표 ≈ 9.5GB (Write Stall 측정 최소 기준 5GB 충족)
 
 이어하기(Resume) 기능:
-  스크립트 실행 시 logs/ 폴더의 가장 최근 로그 파일을 확인한다.
-  로그 파일 맨 끝에 "[EXPERIMENT_COMPLETED]" 문자열이 있으면 완료,
-  없으면 비정상 종료로 판단한다.
+  logs/ 폴더의 가장 최근 로그 파일을 확인하여 완료 여부를 판단한다.
+  - 완료된 시나리오가 있으면 "다음부터 이어하겠습니까? (y/n)" 질문
+  - 비정상 종료된 시나리오가 있으면 "해당 구간부터 재실행? (y/n)" 질문
+  - 전체 완료 시 0번부터 새로 시작
 
-  케이스 1. 중간 시나리오까지 완료된 경우
-    "다음 시나리오부터 이어하겠습니까? (y/n)" 질문을 한다.
-    y → 다음 시나리오부터 재개
-    n → 0번부터 전체 재시작
+------------------------------------------------------------
+3-2. aggregate_stalls.py  [세트 A]
+------------------------------------------------------------
 
-  케이스 2. 비정상 종료된 시나리오가 있는 경우
-    "해당 시나리오부터 다시 이어하겠습니까? (y/n)" 질문을 한다.
-    y → 미완료 로그를 삭제하고 해당 시나리오부터 재실행
-    n → 0번부터 전체 재시작
+역할:
+  세트 A 실험 로그를 파싱하여 4구역 대시보드 PNG를 생성한다.
 
-  케이스 3. 10개 시나리오 모두 완료된 경우
-    자동으로 0번부터 새로 시작한다.
+특징:
+  각 실험별로 가장 최근 로그 파일 1개만 분석한다.
+  (os.path.getctime 기준 최신 파일 선택)
+
+출력 파일명:
+  results/aggregated/rocksdb_dashboard_YYYYMMDD_HHMMSS.png
+
+------------------------------------------------------------
+3-3. run_3factor_experiment.sh  [세트 B]  ← 신규
+------------------------------------------------------------
+
+역할:
+  3가지 요소(Input 과다 / MemTable 크기 / L0 한계)가
+  Write Stall에 미치는 영향을 정량 비교하는 스크립트이다.
+  각 시나리오를 N_RUNS=3회 반복 측정하여 통계적 신뢰도를 확보한다.
+
+핵심 변수:
+  N_RUNS   = 3             (시나리오당 반복 횟수)
+  NUM_KEYS = 10,000,000    (총 쓰기 건수)
+  VAL_SIZE = 1,024 bytes   (키당 값 크기)
+
+랜덤 시드 변경:
+  매 실행마다 --seed=$(date +%s%N) 으로 나노초 기반 시드를 사용한다.
+  → 키 쓰기 순서가 실행마다 달라져 특정 키 분포에 편향되지 않는다.
+
+이어하기(Resume) 기능:
+  count_completed() 함수가 각 시나리오의 완료 로그 수를 자동으로 센다.
+  N_RUNS에 도달하지 않은 시나리오만 추가 실행한다. (y/n 질문 없음)
+  중단 후 재실행해도 이미 완료된 횟수만큼은 건너뛴다.
+
+  예) N_RUNS=3, exp1a가 1회 완료된 상태에서 재실행:
+    → exp0_baseline: SKIP (3/3 완료)
+    → exp1a_input_threads8: 2회 추가 실행 (1/3 → 3/3)
+    → exp1b, exp1c, ...: 정상 실행
 
 run_experiment() 함수 동작 순서:
-  1. 타임스탬프로 로그 파일명 결정
-     (예: exp0_default_20260521_120000.log)
-  2. 임시 DB 삭제 (rm -rf /tmp/rocksdb_stall_exp_db)
-     → 각 시나리오는 항상 빈 DB에서 시작한다
-  3. db_bench 실행, stdout+stderr를 로그 파일로 저장
-  4. 종료 코드 확인
+  1. 나노초 기반 랜덤 시드 생성 (seed=$(date +%s%N))
+  2. 타임스탬프로 로그 파일명 결정
+     (예: exp1a_input_threads8_20260525_120001.log)
+  3. 임시 DB 삭제 (rm -rf /tmp/rocksdb_stall_exp_db)
+     → 각 실행은 항상 빈 DB에서 시작
+  4. db_bench 실행 (--seed 포함), stdout+stderr 로그에 저장
+  5. 종료 코드 확인
      → 성공: "[EXPERIMENT_COMPLETED]" 로그 끝에 추가
      → 실패: 오류 메시지 출력
 
 ------------------------------------------------------------
-3-2. aggregate_stalls.py
+3-4. aggregate_3factor.py  [세트 B]  ← 신규
 ------------------------------------------------------------
 
 역할:
-  logs/ 폴더의 로그 파일들을 파싱하여 4구역 대시보드 PNG를 생성한다.
-  각 실험의 시간별 처리량(OPS/sec) 데이터를 추출하고 비교한다.
+  세트 B 실험 로그를 파싱하여 4구역 대시보드 PNG를 생성한다.
+  같은 시나리오의 여러 회차 로그를 모두 읽어 평균을 계산한다.
 
-로그 파싱 정규식:
+세트 A와의 핵심 차이:
+  - 완료된 로그 파일 전체를 사용 (최신 1개 X)
+  - 각 시간 포인트에서 run별 OPS를 평균 및 표준편차로 집계
+  - 그래프 1: 평균 OPS 선 + 표준편차 음영 영역 표시
+  - 그래프 3: 모든 run의 OPS를 풀링하여 분포 표현 (더 풍부한 샘플)
+
+로그 파싱 정규식 (세트 A와 동일):
   패턴: "thread N: (X,Y) ops and (ops_sec, ...) ops/second in (..., total_sec) seconds"
   추출값:
     ops_sec   → 해당 1초 구간의 처리량 (OPS/sec)
     total_sec → 실험 시작부터의 누적 경과 시간 (초)
-
   같은 시간에 여러 스레드의 출력이 있으면 모두 합산한다.
-  → 멀티스레드 실험에서 전체 처리량을 올바르게 집계한다.
 
-여러 로그 파일이 있을 경우:
-  가장 최근에 생성된 로그 파일 1개만 사용한다.
-  (os.path.getctime 기준 최신 파일 선택)
+다중 run 집계 방식:
+  1. 완료 표시([EXPERIMENT_COMPLETED])가 있는 파일만 사용
+  2. 각 run을 파싱하여 {시간: OPS} 딕셔너리 목록 생성
+  3. 전체 run에 걸친 시간 포인트 합집합을 구한다
+  4. 각 시간 포인트에서 데이터가 있는 run의 OPS만 평균·표준편차 계산
+  5. 박스플롯용으로 모든 run의 OPS를 하나의 풀로 합산
 
 생성되는 4구역 대시보드:
-  ┌──────────────────────┬──────────────────────┐
-  │ 그래프 1             │ 그래프 2             │
-  │ 시간별 처리량 변화   │ 실험별 평균 처리량   │
-  │ (꺾은선 그래프)      │ (가로 막대 그래프)   │
-  ├──────────────────────┼──────────────────────┤
-  │ 그래프 3             │ 그래프 4             │
-  │ 처리량 안정성 분포   │ 누적 작업 진행도     │
-  │ (박스 플롯)          │ (누적 꺾은선)        │
-  └──────────────────────┴──────────────────────┘
+  ┌──────────────────────────┬──────────────────────────┐
+  │ 그래프 1                 │ 그래프 2                 │
+  │ 시간별 처리량            │ 실험별 평균 처리량       │
+  │ (평균선 + 표준편차 음영) │ (가로 막대, n= 표시)     │
+  ├──────────────────────────┼──────────────────────────┤
+  │ 그래프 3                 │ 그래프 4                 │
+  │ 처리량 분포              │ 누적 작업 진행도         │
+  │ (Box Plot, 전체 run 풀링)│ (누적 평균 꺾은선)       │
+  └──────────────────────────┴──────────────────────────┘
 
-  그래프 1: 시간에 따른 쓰기 처리량 변화 (Total OPS)
-    - X축: 시간(초), Y축: OPS/sec
-    - Write Stall 발생 시 처리량이 급격히 떨어지는 구간으로 확인 가능
-    - exp0(기본값) 선이 linewidth=2.5로 굵게 표시되어 기준선 역할
-
-  그래프 2: 실험별 평균 쓰기 처리량 (산술 평균)
-    - 전체 실험 시간의 평균 OPS를 가로 막대로 비교
-    - 평균 높은 순서로 정렬됨
-
-  그래프 3: 처리량 안정성 및 Write Stall 깊이 (Box Plot)
-    - 상자(IQR)가 작을수록 처리량이 안정적 = Write Stall이 적음
-    - 하위 이상치(낮은 OPS 점)가 Write Stall 발생 구간을 나타냄
-
-  그래프 4: 누적 작업 진행도 (1,000만 건 달성 경주)
-    - 어떤 설정이 가장 빠르게 목표 건수를 달성하는지 비교
-    - 빨간 점선: 목표 1,000만 건 기준선
-
-출력 파일명 형식:
-  results/aggregated/rocksdb_dashboard_YYYYMMDD_HHMMSS.png
+출력 파일명:
+  results/aggregated/rocksdb_3factor_YYYYMMDD_HHMMSS.png
 
 
 ================================================================
-4. 10개 실험 시나리오 상세
+4. 실험 시나리오 상세
 ================================================================
+
+------------------------------------------------------------
+4-1. 세트 A 시나리오 (run_stall_experiment.sh)
+------------------------------------------------------------
 
 exp0_default  (대조군)
   옵션: (없음)
   목적: 아무 튜닝도 하지 않은 RocksDB 기본 상태.
         모든 다른 실험의 비교 기준선(Baseline)이 된다.
-  스레드: 기본값(1)
 
 exp1_thread_1
   옵션: --threads=1
-  목적: 단일 스레드로 쓰기. 동시성 경합이 없어
-        Write Stall 없이 가장 단순한 패턴을 보인다.
-        총 건수가 많을 때(200만 건 이상)는 기본값보다 빠를 수 있다.
+  목적: 단일 스레드로 쓰기. 동시성 경합이 없어 가장 단순한 패턴.
 
 exp2_thread_8
   옵션: --threads=8
   목적: 8개 스레드로 적당한 동시성 경합 유발.
-        현실적인 서버 워크로드에 가까운 조건.
 
 exp3_thread_16
   옵션: --threads=16
   목적: 16개 스레드로 극심한 동시성 경합 유발.
-        Lock 경합으로 인한 처리량 저하 관찰.
 
 exp4_small_memtable
-  옵션: --threads=4 --write_buffer_size=2097152
-  목적: MemTable 크기를 2MB(기본 64MB)로 줄여 잦은 Flush 유발.
-        Flush 빈도 증가 → L0 파일 누적 가속 → Write Stall 발생 가능성 증가.
-  write_buffer_size=2097152 = 2MB
+  옵션: --threads=4 --write_buffer_size=2097152  (2MB)
+  목적: MemTable을 2MB로 줄여 잦은 Flush 유발 → L0 누적 가속.
 
 exp5_low_l0_limit
   옵션: --threads=4 --level0_slowdown_writes_trigger=4
                     --level0_stop_writes_trigger=8
-  목적: L0 Stall 임계값을 기본(20/36)에서 4/8로 크게 낮춤.
-        L0 파일이 4개만 쌓여도 Slowdown, 8개면 Stop이 발생한다.
-        Write Stall을 의도적으로 빠르게, 자주 발생시키는 시나리오.
+  목적: L0 임계값을 기본(20/36)에서 4/8로 낮춰 Stall 조기 발동.
 
 exp6_pending_compaction
   옵션: --threads=4 --max_background_compactions=1
                     --soft_pending_compaction_bytes_limit=67108864
                     --hard_pending_compaction_bytes_limit=134217728
-  목적: 백그라운드 Compaction 스레드를 1개로 제한하여 병목 유발.
-        동시에 Pending Compaction 임계값도 낮춘다.
-        soft_limit=64MB, hard_limit=128MB (기본 대비 매우 낮음).
-        Compaction 지연 → Pending 바이트 누적 → Write Stall 발생 시나리오.
+  목적: Compaction 스레드를 1개로 제한 + Pending 임계값 낮춤.
 
 exp7_universal_compaction
   옵션: --threads=4 --compaction_style=1
-  목적: 기본 Leveled Compaction(0) 대신 Universal Compaction(1) 사용.
-        Universal Compaction은 쓰기 증폭(Write Amplification)을 줄이지만
-        읽기 성능과 공간 사용량에서 트레이드오프가 있다.
-        같은 조건에서 Compaction 전략이 Write Stall에 미치는 영향 비교.
+  목적: Leveled Compaction 대신 Universal Compaction 사용.
 
 exp8_direct_io
   옵션: --threads=4 --use_direct_io_for_flush_and_compaction=true
-  목적: Flush/Compaction 시 OS 페이지 캐시를 우회하고 디스크에 직접 쓰기.
-        OS 버퍼링 제거로 실제 디스크 I/O 속도가 그대로 드러난다.
-        페이지 캐시 유/무에 따른 처리량 차이 관찰.
+  목적: OS 페이지 캐시를 우회하고 디스크에 직접 쓰기.
 
 exp9_sync_commit
-  옵션: --threads=4 --sync=1 --duration=60
-  목적: 모든 쓰기마다 fsync()를 강제 호출.
-        디스크에 실제로 데이터가 기록될 때까지 다음 쓰기가 대기한다.
-        가장 느린 쓰기 패턴. 처리량이 극적으로 낮아진다.
-        --duration=60 으로 최대 60초만 실행 (건수 기반이 아닌 시간 기반).
+  옵션: --threads=4 --sync=1 --duration=300
+  목적: 모든 쓰기마다 fsync() 강제. 처리량이 극적으로 낮아진다.
+        fsync 지연(1~5ms/op)으로 300초에 약 0.5~2GB 기록.
+        (--num 기반 10GB는 수시간 소요되므로 시간 기반으로 실행)
+
+------------------------------------------------------------
+4-2. 세트 B 시나리오 (run_3factor_experiment.sh)
+------------------------------------------------------------
+
+연구 목적:
+  세 요소를 각 3단계 강도로 독립 실험한다.
+  threads=4 고정(Factor 1 배제) 조건에서 Factor 2·3을 측정하여
+  요소 간 교란 없이 순수 효과를 비교한다.
+  각 시나리오는 N_RUNS=3회 반복 측정된다.
+
+exp0_baseline  (대조군)
+  옵션: --threads=4
+  목적: threads=4, 모든 기본값. 모든 비교의 기준선.
+
+  [Factor 1: Input 과다]
+  동시 쓰기 스레드 수를 늘려 쓰기 속도를 압박한다.
+  총 쓰기량(9.5GB)은 동일하지만 순간 최대 쓰기 속도가 높아진다.
+
+exp1a_input_threads8   옵션: --threads=8   (baseline 대비 2배 부하)
+exp1b_input_threads16  옵션: --threads=16  (baseline 대비 4배 부하)
+exp1c_input_threads32  옵션: --threads=32  (baseline 대비 8배 부하)
+
+  [Factor 2: MemTable 크기 축소]
+  write_buffer_size를 단계적으로 줄인다. threads=4 고정.
+  MemTable이 작을수록 Flush 빈도 증가 → L0 파일 누적 가속.
+  기본값 64MB에서 1/4, 1/16, 1/32 수준으로 축소.
+
+exp2a_mem_16mb  옵션: --threads=4 --write_buffer_size=16777216  (16MB)
+exp2b_mem_4mb   옵션: --threads=4 --write_buffer_size=4194304   (4MB)
+exp2c_mem_2mb   옵션: --threads=4 --write_buffer_size=2097152   (2MB)
+
+  [Factor 3: L0 수용 한계 축소]
+  level0 임계값을 단계적으로 낮춘다. threads=4 고정.
+  임계값이 낮을수록 L0 파일 4~8개만 쌓여도 Stall이 발동된다.
+  기본값(slowdown=20, stop=36)에서 단계적으로 하향.
+
+exp3a_l0_12_24  옵션: --threads=4 --level0_slowdown_writes_trigger=12
+                                   --level0_stop_writes_trigger=24
+exp3b_l0_8_16   옵션: --threads=4 --level0_slowdown_writes_trigger=8
+                                   --level0_stop_writes_trigger=16
+exp3c_l0_4_8    옵션: --threads=4 --level0_slowdown_writes_trigger=4
+                                   --level0_stop_writes_trigger=8
 
 
 ================================================================
@@ -238,7 +286,6 @@ exp9_sync_commit
 
 전제 조건:
   - ~/rocksdb/db_bench 가 릴리스 빌드로 컴파일되어 있어야 한다.
-    (디버그 빌드도 동작하지만 성능 측정값이 실제보다 낮게 나온다)
     릴리스 빌드 방법:
       cd ~/rocksdb
       make clean && DEBUG_LEVEL=0 make db_bench -j$(nproc)
@@ -246,41 +293,69 @@ exp9_sync_commit
   - NanumBarunGothic 폰트가 있으면 한글 그래프가 올바르게 표시된다.
     없어도 동작은 하지만 한글이 깨질 수 있다.
 
-[기본 실행] 처음 또는 이어하기
+------------------------------------------------------------
+[세트 A] 다양한 설정 탐색 실험
+------------------------------------------------------------
+
+[기본 실행]
   cd ~/rocksdb/experiment2
   ./run_stall_experiment.sh
 
-  실행하면 logs/ 에 기존 로그가 있는지 자동으로 확인하고,
-  이어하기 여부를 질문한다.
+  실행 시 logs/ 에 기존 로그가 있으면 이어하기 여부를 질문한다.
 
-[초기화 후 재실행] 이전 로그를 모두 지우고 처음부터 시작
+[초기화 후 재실행]
   ./run_stall_experiment.sh --clean
   ./run_stall_experiment.sh
 
-  --clean 옵션은 로그 파일과 /tmp 임시 DB를 삭제한다.
-  aggregated/ 폴더의 PNG 그래프는 보존된다.
-
-[시각화만 다시 실행] 로그는 있고 그래프만 다시 그릴 때
+[시각화만 재실행]
   python3 ~/rocksdb/experiment2/aggregate_stalls.py
 
-  로그를 다시 수집하지 않고, 기존 로그에서 그래프만 재생성한다.
+------------------------------------------------------------
+[세트 B] 3요소 비교 실험  ← 주요 연구 목적
+------------------------------------------------------------
+
+[기본 실행] (3회 반복 측정 포함)
+  cd ~/rocksdb/experiment2
+  ./run_3factor_experiment.sh
+
+  이미 완료된 시나리오는 자동으로 건너뛴다.
+  중단 후 재실행해도 부족한 횟수만큼만 추가 실행된다.
+
+[초기화 후 재실행]
+  ./run_3factor_experiment.sh --clean
+  ./run_3factor_experiment.sh
+
+  주의: --clean은 세트 A와 세트 B의 로그를 모두 삭제한다.
+        logs/ 폴더를 공유하기 때문이다.
+
+[시각화만 재실행]
+  python3 ~/rocksdb/experiment2/aggregate_3factor.py
+
+[반복 횟수 변경]
+  run_3factor_experiment.sh 상단의 N_RUNS 값을 수정한다.
+  N_RUNS=5 로 변경하면 각 시나리오를 5회 반복 측정한다.
+  이미 3회 완료된 상태에서 N_RUNS=5로 변경하면 2회 추가 실행된다.
 
 
 ================================================================
 6. 실험 전체 흐름 요약
 ================================================================
 
-  ./run_stall_experiment.sh 실행
+------------------------------------------------------------
+[세트 A 흐름]
+------------------------------------------------------------
+
+  ./run_stall_experiment.sh
           │
           ▼
-  [이어하기 여부 확인]
+  [이어하기 여부 확인] (y/n 질문)
   logs/ 의 최신 로그 파일 확인
   → 완료 표시 있음: 다음 시나리오부터 이어하기 여부 질문
   → 완료 표시 없음: 해당 시나리오 재실행 여부 질문
   → 로그 없음:      0번부터 시작
           │
           ▼
-  [시나리오 루프: exp0 → exp1 → ... → exp9]
+  [시나리오 루프: exp0_default → ... → exp9_sync_commit]
   각 시나리오마다:
     1. /tmp/rocksdb_stall_exp_db 삭제 (빈 DB에서 시작)
     2. db_bench 실행 (fillrandom, 1초마다 통계 출력)
@@ -289,52 +364,95 @@ exp9_sync_commit
           │
           ▼
   [aggregate_stalls.py 자동 호출]
-    1. logs/ 의 각 실험별 최신 로그 파일 파싱
-    2. 1초 단위 OPS 데이터 추출 및 스레드 합산
-    3. 4구역 대시보드 PNG 생성
+    1. logs/ 의 각 실험별 최신 로그 파일 1개 파싱
+    2. 4구역 대시보드 PNG 생성
        → results/aggregated/rocksdb_dashboard_{timestamp}.png
+
+------------------------------------------------------------
+[세트 B 흐름]
+------------------------------------------------------------
+
+  ./run_3factor_experiment.sh
           │
           ▼
-  완료 메시지 출력
+  [각 시나리오별 완료 횟수 자동 확인] (y/n 질문 없음)
+  count_completed() 로 [EXPERIMENT_COMPLETED] 줄 수를 카운트
+  → N_RUNS 이상이면 SKIP
+  → N_RUNS 미만이면 부족한 횟수만큼 추가 실행
+          │
+          ▼
+  [시나리오 루프: exp0_baseline → exp1a → ... → exp3c_l0_4_8]
+  각 실행마다:
+    1. 나노초 기반 랜덤 시드 생성 (seed=$(date +%s%N))
+    2. /tmp/rocksdb_stall_exp_db 삭제 (빈 DB에서 시작)
+    3. db_bench 실행 (--seed 포함, fillrandom, 1초마다 통계 출력)
+    4. 로그를 results/logs/{exp_name}_{timestamp}.log 에 저장
+    5. 성공 시 "[EXPERIMENT_COMPLETED]" 로그 끝에 기록
+    (같은 시나리오가 N_RUNS번 완료될 때까지 반복)
+          │
+          ▼
+  [aggregate_3factor.py 자동 호출]
+    1. logs/ 의 각 시나리오별 완료된 로그 파일 전체 파싱
+    2. run별 OPS 평균·표준편차 계산
+    3. 4구역 대시보드 PNG 생성 (표준편차 음영 포함)
+       → results/aggregated/rocksdb_3factor_{timestamp}.png
 
 
 ================================================================
 7. 로그 파일 형식
 ================================================================
 
-파일명 형식:
+파일명 형식 (세트 A·B 공통):
   {실험이름}_{YYYYMMDD}_{HHMMSS}.log
-  예) exp5_low_l0_limit_20260521_134502.log
+  예) exp1a_input_threads8_20260525_134502.log
 
 로그 내용:
   db_bench의 stdout과 stderr가 모두 기록된다.
-  aggregate_stalls.py가 파싱하는 핵심 줄 형식:
+  파싱하는 핵심 줄 형식:
     "thread N: (누적ops, 구간ops) ops and (구간OPS/s, 전체OPS/s) ops/second
                in (구간초, 누적초) seconds"
   파싱 대상: 구간OPS/s (group[1]) 와 누적초 (group[2])
 
   실험 성공 시 파일 맨 끝에 추가되는 줄:
     [EXPERIMENT_COMPLETED]
-  이 줄이 없으면 이어하기 로직이 비정상 종료로 판단한다.
+  세트 B의 count_completed()는 이 줄로 완료 횟수를 판단한다.
+
+세트 B 시나리오별 로그 파일 예시 (N_RUNS=3):
+  logs/exp1a_input_threads8_20260525_120001.log  ← 1회차
+  logs/exp1a_input_threads8_20260525_130015.log  ← 2회차
+  logs/exp1a_input_threads8_20260525_140022.log  ← 3회차
 
 
 ================================================================
 8. 새 시나리오 추가 방법
 ================================================================
 
+------------------------------------------------------------
+세트 A에 추가하는 경우
+------------------------------------------------------------
+
 run_stall_experiment.sh 의 EXPS 배열에 항목 추가:
   형식: "실험이름|db_bench 추가 옵션"
-
-  예) Level 0 파일 수를 2/4로 극단적으로 줄이는 시나리오 추가:
-    "exp10_extreme_l0|--threads=4 --level0_slowdown_writes_trigger=2 --level0_stop_writes_trigger=4"
+  예) "exp10_extreme_l0|--threads=4 --level0_slowdown_writes_trigger=2 --level0_stop_writes_trigger=4"
 
 aggregate_stalls.py 의 exp_configs 딕셔너리에 항목 추가:
-  형식: '실험이름': ('범례 레이블', '선 색상', '선 스타일')
+  형식: '실험이름': ('범례 레이블', '색상', '선스타일')
+  예) 'exp10_extreme_l0': ('10. 극단적 L0 한계', 'darkred', '-'),
 
-  예)
-    'exp10_extreme_l0': ('10. 극단적 L0 한계', 'darkred', '-'),
+------------------------------------------------------------
+세트 B에 추가하는 경우
+------------------------------------------------------------
 
-  두 파일에 모두 추가해야 시각화에 반영된다.
-  실험이름은 두 파일에서 반드시 동일해야 한다.
+run_3factor_experiment.sh 의 EXPS 배열에 항목 추가:
+  형식: "실험이름|db_bench 추가 옵션"
+  예) "exp3d_l0_2_4|--threads=4 --level0_slowdown_writes_trigger=2 --level0_stop_writes_trigger=4"
+
+aggregate_3factor.py 의 exp_configs 딕셔너리에 항목 추가:
+  예) 'exp3d_l0_2_4': ('3D. L0 한계 2/4', '#03012a', '-'),
+
+공통 주의사항:
+  두 파일에서 실험이름이 반드시 동일해야 시각화에 반영된다.
+  세트 A와 세트 B의 실험이름이 겹치지 않도록 주의한다.
+  (logs/ 폴더를 공유하기 때문에 이름이 겹치면 서로의 로그를 읽을 수 있다)
 
 ================================================================
