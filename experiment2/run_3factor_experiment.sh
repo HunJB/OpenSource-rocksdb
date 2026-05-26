@@ -20,7 +20,7 @@ N_RUNS=3
 # Factor 1 전용: 모든 실험을 동일한 시간 창으로 고정
 # 같은 시간 동안 스레드가 많을수록 더 많은 데이터를 DB에 밀어넣어 진정한 "입력 과다" 재현
 # (--num 분배 방식은 총량이 같아 압박 차이 없음 → --duration 기반으로 대체)
-DURATION_INPUT=600
+DURATION_INPUT=120
 
 RUN_CLEAN=false
 for arg in "$@"; do
@@ -112,7 +112,7 @@ run_experiment() {
     # --num을 사실상 무제한으로 설정해야 duration이 만료될 때까지 계속 쓰기를 시도함
     local num_arg
     if echo "$extra_args" | grep -q -- '--duration='; then
-        num_arg=999999999
+        num_arg=${NUM_KEYS}
         echo ""
         echo "[진행 중] ${exp_name}  (Run ${run_num}/${N_RUNS} | seed=${seed} | ${thread_count}T × ${DURATION_INPUT}초 duration 기반)"
     else
