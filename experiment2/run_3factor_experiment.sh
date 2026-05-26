@@ -17,6 +17,11 @@ BASE_DB="/tmp/rocksdb_stall_exp_db"
 # 각 시나리오당 반복 횟수 (다른 랜덤 시드로 측정 → aggregate_3factor.py 에서 평균 계산)
 N_RUNS=3
 
+# Factor 1 전용: 모든 실험을 동일한 시간 창으로 고정
+# 같은 시간 동안 스레드가 많을수록 더 많은 데이터를 DB에 밀어넣어 진정한 "입력 과다" 재현
+# (--num 분배 방식은 총량이 같아 압박 차이 없음 → --duration 기반으로 대체)
+DURATION_INPUT=600
+
 RUN_CLEAN=false
 for arg in "$@"; do
     if [ "$arg" == "--clean" ]; then
@@ -44,11 +49,12 @@ EXPS=(
     # 대조군 (threads=4, 모든 기본값 유지)
     "exp0_baseline|--threads=4"
 
-    # Factor 1: Input 과다 — 동시 쓰기 스레드 수 증가 → 쓰기 속도 압박
-    # threads=4(baseline) 대비 2배·4배·8배로 부하 증가 (총 쓰기량은 동일하게 유지)
-    "exp1a_input_threads8|--threads=8"
-    "exp1b_input_threads16|--threads=16"
-    "exp1c_input_threads32|--threads=32"
+    # Factor 1: Input 과다 — 동일 시간(DURATION_INPUT초) 동안 스레드 수 증가 → 단위 시간당 쓰기 요청 증가
+    # --duration으로 시간 창을 고정하고 --num은 실질적으로 무제한(999999999)으로 설정
+    # → 스레드가 많을수록 같은 시간에 더 많은 데이터를 DB에 밀어넣어 진정한 압박 차이 발생
+    "exp1a_input_threads8|--threads=8 --duration=${DURATION_INPUT}"
+    "exp1b_input_threads16|--threads=16 --duration=${DURATION_INPUT}"
+    "exp1c_input_threads32|--threads=32 --duration=${DURATION_INPUT}"
 
     # Factor 2: MemTable 크기 축소 — 잦은 Flush → L0 파일 누적 가속 → Stall 유발
     # 기본값 64MB에서 단계적 축소 (threads=4 고정으로 Factor 1 영향 배제)
@@ -101,16 +107,26 @@ run_experiment() {
     if [ -z "$thread_count" ]; then
         thread_count=4
     fi
-    local per_thread_num=$(( NUM_KEYS / thread_count ))
 
-    echo ""
-    echo "[진행 중] ${exp_name}  (Run ${run_num}/${N_RUNS} | seed=${seed} | ${thread_count}T × ${per_thread_num}건)"
+    # --duration이 있으면 시간 기반 실행 (Factor 1 전용)
+    # --num을 사실상 무제한으로 설정해야 duration이 만료될 때까지 계속 쓰기를 시도함
+    local num_arg
+    if echo "$extra_args" | grep -q -- '--duration='; then
+        num_arg=999999999
+        echo ""
+        echo "[진행 중] ${exp_name}  (Run ${run_num}/${N_RUNS} | seed=${seed} | ${thread_count}T × ${DURATION_INPUT}초 duration 기반)"
+    else
+        num_arg=$(( NUM_KEYS / thread_count ))
+        echo ""
+        echo "[진행 중] ${exp_name}  (Run ${run_num}/${N_RUNS} | seed=${seed} | ${thread_count}T × ${num_arg}건)"
+    fi
+
     rm -rf "${BASE_DB}"
 
     ${DB_BENCH} \
         --benchmarks=fillrandom \
         --db="${BASE_DB}" \
-        --num=${per_thread_num} \
+        --num=${num_arg} \
         --value_size=${VAL_SIZE} \
         --stats_interval_seconds=1 \
         --seed=${seed} \
