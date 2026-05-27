@@ -1,0 +1,666 @@
+RocksDB:    version 11.3.0
+Date:       Tue May 26 09:33:36 2026
+CPU:        2 * Intel Xeon Processor (SapphireRapids)
+CPUCache:   16384 KB
+2026/05/26-09:33:38  ... thread 3: (35000,35000) ops and (34484.3,34484.3) ops/second in (1.014955,1.014955) seconds
+2026/05/26-09:33:38  ... thread 2: (38000,38000) ops and (37437.8,37437.8) ops/second in (1.015017,1.015017) seconds
+2026/05/26-09:33:38  ... thread 1: (40000,40000) ops and (39174.7,39174.7) ops/second in (1.021067,1.021067) seconds
+2026/05/26-09:33:38  ... thread 0: (49000,49000) ops and (47892.5,47892.5) ops/second in (1.023124,1.023124) seconds
+2026/05/26-09:33:39  ... thread 3: (35000,70000) ops and (34339.6,34411.8) ops/second in (1.019230,2.034185) seconds
+2026/05/26-09:33:39  ... thread 2: (35000,73000) ops and (34276.4,35852.4) ops/second in (1.021111,2.036128) seconds
+2026/05/26-09:33:39  ... thread 1: (35000,75000) ops and (34333.4,36756.0) ops/second in (1.019416,2.040483) seconds
+2026/05/26-09:33:39  ... thread 0: (34000,83000) ops and (33314.8,40612.8) ops/second in (1.020567,2.043691) seconds
+2026/05/26-09:33:40  ... thread 0: (18000,101000) ops and (13859.7,30217.6) ops/second in (1.298732,3.342423) seconds
+2026/05/26-09:33:40  ... thread 3: (19000,89000) ops and (14388.4,26530.0) ops/second in (1.320505,3.354690) seconds
+2026/05/26-09:33:40  ... thread 2: (19000,92000) ops and (14394.9,27413.2) ops/second in (1.319916,3.356044) seconds
+2026/05/26-09:33:40  ... thread 1: (18000,93000) ops and (13614.5,27657.1) ops/second in (1.322122,3.362605) seconds
+2026/05/26-09:33:41  ... thread 1: (16000,109000) ops and (14359.0,24347.3) ops/second in (1.114284,4.476889) seconds
+2026/05/26-09:33:41  ... thread 2: (13000,105000) ops and (11553.1,23430.8) ops/second in (1.125239,4.481283) seconds
+2026/05/26-09:33:41  ... thread 3: (16000,105000) ops and (14182.0,23422.4) ops/second in (1.128189,4.482879) seconds
+2026/05/26-09:33:41  ... thread 0: (16000,117000) ops and (14016.8,26093.3) ops/second in (1.141487,4.483910) seconds
+2026/05/26-09:33:42  ... thread 1: (34000,143000) ops and (33809.2,26082.8) ops/second in (1.005642,5.482531) seconds
+2026/05/26-09:33:42  ... thread 2: (33000,138000) ops and (32188.9,25061.4) ops/second in (1.025197,5.506480) seconds
+2026/05/26-09:33:42  ... thread 0: (35000,152000) ops and (33878.4,27551.1) ops/second in (1.033107,5.517017) seconds
+2026/05/26-09:33:42  ... thread 3: (34000,139000) ops and (32729.6,25173.4) ops/second in (1.038814,5.521693) seconds
+2026/05/26-09:33:43  ... thread 3: (13000,152000) ops and (12979.4,23301.2) ops/second in (1.001584,6.523277) seconds
+2026/05/26-09:33:43  ... thread 1: (12000,155000) ops and (11380.6,23711.3) ops/second in (1.054429,6.536960) seconds
+2026/05/26-09:33:43  ... thread 0: (17000,169000) ops and (16676.1,25855.0) ops/second in (1.019425,6.536442) seconds
+2026/05/26-09:33:43  ... thread 2: (10000,148000) ops and (9632.3,22613.9) ops/second in (1.038174,6.544654) seconds
+2026/05/26-09:33:44  ... thread 1: (14000,169000) ops and (12296.0,22018.0) ops/second in (1.138578,7.675538) seconds
+2026/05/26-09:33:44  ... thread 2: (16000,164000) ops and (14061.8,21347.3) ops/second in (1.137833,7.682487) seconds
+2026/05/26-09:33:44  ... thread 3: (15000,167000) ops and (12858.7,21717.1) ops/second in (1.166528,7.689805) seconds
+2026/05/26-09:33:44  ... thread 0: (16000,185000) ops and (13885.2,24061.1) ops/second in (1.152308,7.688750) seconds
+2026/05/26-09:33:45  ... thread 0: (14000,199000) ops and (12252.3,22533.3) ops/second in (1.142640,8.831390) seconds
+2026/05/26-09:33:45  ... thread 1: (16000,185000) ops and (13739.3,20927.4) ops/second in (1.164539,8.840077) seconds
+2026/05/26-09:33:45  ... thread 3: (16000,183000) ops and (13733.6,20666.7) ops/second in (1.165030,8.854835) seconds
+2026/05/26-09:33:45  ... thread 2: (17000,181000) ops and (14185.9,20380.9) ops/second in (1.198369,8.880856) seconds
+2026/05/26-09:33:46  ... thread 0: (17000,216000) ops and (16887.2,21955.5) ops/second in (1.006681,9.838071) seconds
+2026/05/26-09:33:46  ... thread 3: (21000,204000) ops and (20753.6,20675.6) ops/second in (1.011875,9.866710) seconds
+2026/05/26-09:33:46  ... thread 1: (17000,202000) ops and (16343.3,20444.8) ops/second in (1.040179,9.880256) seconds
+2026/05/26-09:33:46  ... thread 2: (14000,195000) ops and (13845.9,19712.9) ops/second in (1.011133,9.891989) seconds
+2026/05/26-09:33:49  ... thread 3: (30000,234000) ops and (10087.5,18223.3) ops/second in (2.973986,12.840696) seconds
+2026/05/26-09:33:49  ... thread 1: (28000,230000) ops and (9450.0,17908.3) ops/second in (2.962974,12.843230) seconds
+2026/05/26-09:33:49  ... thread 2: (31000,226000) ops and (10455.4,17578.0) ops/second in (2.964989,12.856978) seconds
+2026/05/26-09:33:49  ... thread 0: (28000,244000) ops and (9308.0,18993.9) ops/second in (3.008151,12.846222) seconds
+2026/05/26-09:33:50  ... thread 3: (31000,265000) ops and (30999.4,19146.4) ops/second in (1.000020,13.840716) seconds
+2026/05/26-09:33:50  ... thread 1: (29000,259000) ops and (28928.2,18706.2) ops/second in (1.002482,13.845712) seconds
+2026/05/26-09:33:50  ... thread 0: (36000,280000) ops and (35962.2,20220.6) ops/second in (1.001051,13.847273) seconds
+2026/05/26-09:33:50  ... thread 2: (23000,249000) ops and (22707.7,17952.6) ops/second in (1.012871,13.869849) seconds
+2026/05/26-09:33:51  ... thread 3: (14000,279000) ops and (13715.4,18773.4) ops/second in (1.020754,14.861470) seconds
+2026/05/26-09:33:51  ... thread 1: (10000,269000) ops and (9848.0,18100.9) ops/second in (1.015439,14.861151) seconds
+2026/05/26-09:33:51  ... thread 0: (10000,290000) ops and (9871.2,19515.1) ops/second in (1.013048,14.860321) seconds
+2026/05/26-09:33:51  ... thread 2: (14000,263000) ops and (13628.1,17654.4) ops/second in (1.027288,14.897137) seconds
+2026/05/26-09:33:52  ... thread 3: (11000,290000) ops and (10924.2,18275.3) ops/second in (1.006939,15.868409) seconds
+2026/05/26-09:33:52  ... thread 0: (8000,298000) ops and (7955.3,18782.4) ops/second in (1.005620,15.865941) seconds
+2026/05/26-09:33:52  ... thread 1: (10000,279000) ops and (9850.1,17573.3) ops/second in (1.015217,15.876368) seconds
+2026/05/26-09:33:52  ... thread 2: (6000,269000) ops and (5993.8,16920.2) ops/second in (1.001028,15.898165) seconds
+2026/05/26-09:33:54  ... thread 0: (11000,309000) ops and (10020.3,18215.3) ops/second in (1.097776,16.963717) seconds
+2026/05/26-09:33:54  ... thread 1: (13000,292000) ops and (11867.7,17205.0) ops/second in (1.095409,16.971777) seconds
+2026/05/26-09:33:54  ... thread 3: (12000,302000) ops and (10672.3,17772.2) ops/second in (1.124406,16.992815) seconds
+2026/05/26-09:33:54  ... thread 2: (11000,280000) ops and (9971.8,16469.4) ops/second in (1.103110,17.001275) seconds
+2026/05/26-09:33:55  ... thread 3: (14000,316000) ops and (12135.7,17413.9) ops/second in (1.153621,18.146436) seconds
+2026/05/26-09:33:55  ... thread 2: (15000,295000) ops and (12939.9,16244.1) ops/second in (1.159203,18.160478) seconds
+2026/05/26-09:33:55  ... thread 1: (17000,309000) ops and (14298.4,17014.7) ops/second in (1.188946,18.160723) seconds
+2026/05/26-09:33:55  ... thread 0: (17000,326000) ops and (14177.9,17948.8) ops/second in (1.199051,18.162768) seconds
+2026/05/26-09:33:56  ... thread 2: (13000,308000) ops and (11825.6,15991.9) ops/second in (1.099307,19.259785) seconds
+2026/05/26-09:33:56  ... thread 0: (15000,341000) ops and (13539.1,17695.3) ops/second in (1.107899,19.270667) seconds
+2026/05/26-09:33:56  ... thread 3: (19000,335000) ops and (16815.5,17378.8) ops/second in (1.129910,19.276346) seconds
+2026/05/26-09:33:56  ... thread 1: (15000,324000) ops and (13415.9,16806.0) ops/second in (1.118073,19.278796) seconds
+2026/05/26-09:33:58  ... thread 2: (18000,326000) ops and (7972.8,15150.5) ops/second in (2.257682,21.517467) seconds
+2026/05/26-09:33:58  ... thread 0: (16000,357000) ops and (7103.1,16586.8) ops/second in (2.252532,21.523199) seconds
+2026/05/26-09:33:58  ... thread 1: (16000,340000) ops and (7098.8,15789.9) ops/second in (2.253908,21.532704) seconds
+2026/05/26-09:33:58  ... thread 3: (12000,347000) ops and (5304.9,16110.7) ops/second in (2.262073,21.538419) seconds
+2026/05/26-09:33:59  ... thread 1: (13000,353000) ops and (11831.8,15597.8) ops/second in (1.098730,22.631434) seconds
+2026/05/26-09:33:59  ... thread 2: (16000,342000) ops and (14210.6,15103.7) ops/second in (1.125918,22.643385) seconds
+2026/05/26-09:33:59  ... thread 3: (16000,363000) ops and (14434.7,16028.7) ops/second in (1.108441,22.646860) seconds
+2026/05/26-09:33:59  ... thread 0: (17000,374000) ops and (15042.9,16509.7) ops/second in (1.130101,22.653300) seconds
+2026/05/26-09:34:00  ... thread 2: (25000,367000) ops and (19900.2,15355.9) ops/second in (1.256268,23.899653) seconds
+2026/05/26-09:34:00  ... thread 0: (12000,386000) ops and (9620.7,16150.2) ops/second in (1.247311,23.900611) seconds
+2026/05/26-09:34:00  ... thread 1: (11000,364000) ops and (8592.3,15222.7) ops/second in (1.280211,23.911645) seconds
+2026/05/26-09:34:00  ... thread 3: (14000,377000) ops and (10921.6,15755.1) ops/second in (1.281858,23.928718) seconds
+2026/05/26-09:34:02  ... thread 0: (27000,413000) ops and (15846.4,16130.0) ops/second in (1.703861,25.604472) seconds
+2026/05/26-09:34:02  ... thread 3: (35000,412000) ops and (20795.1,16086.3) ops/second in (1.683092,25.611810) seconds
+2026/05/26-09:34:02  ... thread 1: (32000,396000) ops and (18814.0,15461.2) ops/second in (1.700862,25.612507) seconds
+2026/05/26-09:34:02  ... thread 2: (31000,398000) ops and (17970.5,15531.9) ops/second in (1.725054,25.624707) seconds
+2026/05/26-09:34:03  ... thread 3: (27000,439000) ops and (26778.2,16491.3) ops/second in (1.008284,26.620094) seconds
+2026/05/26-09:34:03  ... thread 1: (27000,423000) ops and (26822.7,15890.8) ops/second in (1.006609,26.619116) seconds
+2026/05/26-09:34:03  ... thread 0: (34000,447000) ops and (33476.5,16791.8) ops/second in (1.015637,26.620109) seconds
+2026/05/26-09:34:03  ... thread 2: (31000,429000) ops and (30779.6,16108.5) ops/second in (1.007161,26.631868) seconds
+2026/05/26-09:34:04  ... thread 0: (3000,450000) ops and (2942.3,16280.9) ops/second in (1.019594,27.639703) seconds
+2026/05/26-09:34:04  ... thread 1: (2000,425000) ops and (1954.5,15374.9) ops/second in (1.023268,27.642384) seconds
+2026/05/26-09:34:04  ... thread 2: (3000,432000) ops and (2954.9,15625.5) ops/second in (1.015254,27.647122) seconds
+2026/05/26-09:34:04  ... thread 3: (4000,443000) ops and (3893.5,16023.2) ops/second in (1.027360,27.647454) seconds
+2026/05/26-09:34:05  ... thread 2: (13000,445000) ops and (10419.8,15400.7) ops/second in (1.247628,28.894750) seconds
+2026/05/26-09:34:05  ... thread 0: (16000,466000) ops and (12721.9,16126.0) ops/second in (1.257673,28.897376) seconds
+2026/05/26-09:34:05  ... thread 1: (14000,439000) ops and (10922.5,15177.6) ops/second in (1.281754,28.924138) seconds
+2026/05/26-09:34:05  ... thread 3: (13000,456000) ops and (10156.6,15763.6) ops/second in (1.279958,28.927412) seconds
+2026/05/26-09:34:06  ... thread 0: (32000,498000) ops and (31539.7,16648.9) ops/second in (1.014593,29.911969) seconds
+2026/05/26-09:34:06  ... thread 2: (33000,478000) ops and (31824.3,15969.7) ops/second in (1.036943,29.931693) seconds
+2026/05/26-09:34:06  ... thread 1: (31000,470000) ops and (30758.0,15702.3) ops/second in (1.007867,29.932005) seconds
+2026/05/26-09:34:07  ... thread 3: (30000,486000) ops and (29185.2,16224.2) ops/second in (1.027920,29.955332) seconds
+2026/05/26-09:34:07  ... thread 2: (24000,502000) ops and (23723.2,16223.2) ops/second in (1.011670,30.943363) seconds
+2026/05/26-09:34:08  ... thread 3: (19000,505000) ops and (18951.9,16312.5) ops/second in (1.002538,30.957870) seconds
+2026/05/26-09:34:08  ... thread 1: (32000,502000) ops and (31182.1,16215.4) ops/second in (1.026231,30.958236) seconds
+2026/05/26-09:34:08  ... thread 0: (23000,521000) ops and (21661.1,16820.7) ops/second in (1.061810,30.973779) seconds
+2026/05/26-09:34:10  ... thread 3: (5000,510000) ops and (1921.3,15196.5) ops/second in (2.602449,33.560319) seconds
+2026/05/26-09:34:10  ... thread 0: (6000,527000) ops and (2320.6,15703.6) ops/second in (2.585497,33.559276) seconds
+2026/05/26-09:34:10  ... thread 2: (7000,509000) ops and (2670.7,15164.9) ops/second in (2.621011,33.564374) seconds
+2026/05/26-09:34:10  ... thread 1: (6000,508000) ops and (2248.0,15106.8) ops/second in (2.669038,33.627274) seconds
+2026/05/26-09:34:11  ... thread 2: (29000,538000) ops and (27388.3,15538.7) ops/second in (1.058846,34.623220) seconds
+2026/05/26-09:34:11  ... thread 0: (43000,570000) ops and (40401.8,16462.8) ops/second in (1.064308,34.623584) seconds
+2026/05/26-09:34:11  ... thread 1: (29000,537000) ops and (28660.0,15502.7) ops/second in (1.011864,34.639138) seconds
+2026/05/26-09:34:11  ... thread 3: (25000,535000) ops and (23073.0,15442.9) ops/second in (1.083519,34.643838) seconds
+2026/05/26-09:34:12  ... thread 3: (32000,567000) ops and (29023.1,15861.7) ops/second in (1.102570,35.746408) seconds
+2026/05/26-09:34:12  ... thread 1: (32000,569000) ops and (28780.3,15915.6) ops/second in (1.111872,35.751010) seconds
+2026/05/26-09:34:12  ... thread 0: (29000,599000) ops and (25707.4,16754.5) ops/second in (1.128080,35.751664) seconds
+2026/05/26-09:34:12  ... thread 2: (30000,568000) ops and (26440.5,15884.6) ops/second in (1.134622,35.757842) seconds
+2026/05/26-09:34:13  ... thread 2: (25000,593000) ops and (23004.8,16094.6) ops/second in (1.086729,36.844571) seconds
+2026/05/26-09:34:13  ... thread 0: (31000,630000) ops and (28421.2,17099.9) ops/second in (1.090735,36.842399) seconds
+2026/05/26-09:34:13  ... thread 3: (35000,602000) ops and (31700.3,16336.3) ops/second in (1.104092,36.850500) seconds
+2026/05/26-09:34:13  ... thread 1: (34000,603000) ops and (30474.7,16356.2) ops/second in (1.115680,36.866690) seconds
+2026/05/26-09:34:15  ... thread 2: (29000,622000) ops and (14033.8,15985.2) ops/second in (2.066440,38.911011) seconds
+2026/05/26-09:34:15  ... thread 0: (29000,659000) ops and (14029.8,16936.8) ops/second in (2.067035,38.909434) seconds
+2026/05/26-09:34:15  ... thread 3: (33000,635000) ops and (15958.3,16316.2) ops/second in (2.067895,38.918395) seconds
+2026/05/26-09:34:15  ... thread 1: (33000,636000) ops and (16080.3,16341.7) ops/second in (2.052206,38.918896) seconds
+2026/05/26-09:34:17  ... thread 0: (27000,686000) ops and (23526.4,17125.6) ops/second in (1.147648,40.057082) seconds
+2026/05/26-09:34:17  ... thread 1: (36000,672000) ops and (31003.3,16766.4) ops/second in (1.161167,40.080063) seconds
+2026/05/26-09:34:17  ... thread 2: (28000,650000) ops and (23871.8,16216.0) ops/second in (1.172933,40.083944) seconds
+2026/05/26-09:34:17  ... thread 3: (34000,669000) ops and (28879.8,16685.1) ops/second in (1.177293,40.095688) seconds
+2026/05/26-09:34:18  ... thread 1: (28000,700000) ops and (27376.1,17030.4) ops/second in (1.022790,41.102853) seconds
+2026/05/26-09:34:18  ... thread 3: (30000,699000) ops and (29685.3,17004.7) ops/second in (1.010600,41.106288) seconds
+2026/05/26-09:34:18  ... thread 2: (26000,676000) ops and (25376.0,16444.3) ops/second in (1.024591,41.108535) seconds
+2026/05/26-09:34:18  ... thread 0: (39000,725000) ops and (36500.0,17628.9) ops/second in (1.068494,41.125576) seconds
+2026/05/26-09:34:19  ... thread 2: (19000,695000) ops and (18623.7,16497.1) ops/second in (1.020203,42.128738) seconds
+2026/05/26-09:34:19  ... thread 1: (23000,723000) ops and (22296.4,17159.4) ops/second in (1.031557,42.134410) seconds
+2026/05/26-09:34:19  ... thread 3: (19000,718000) ops and (18250.6,17035.5) ops/second in (1.041060,42.147348) seconds
+2026/05/26-09:34:19  ... thread 0: (22000,747000) ops and (21077.0,17714.3) ops/second in (1.043794,42.169370) seconds
+2026/05/26-09:34:21  ... thread 3: (25000,743000) ops and (12953.8,16856.8) ops/second in (1.929934,44.077282) seconds
+2026/05/26-09:34:21  ... thread 2: (27000,722000) ops and (13848.1,16379.9) ops/second in (1.949723,44.078461) seconds
+2026/05/26-09:34:21  ... thread 0: (28000,775000) ops and (14652.8,17581.6) ops/second in (1.910902,44.080272) seconds
+2026/05/26-09:34:21  ... thread 1: (26000,749000) ops and (13347.4,16990.9) ops/second in (1.947947,44.082357) seconds
+2026/05/26-09:34:24  ... thread 2: (14000,736000) ops and (3924.8,15447.4) ops/second in (3.567101,47.645562) seconds
+2026/05/26-09:34:24  ... thread 1: (16000,765000) ops and (4488.1,16055.5) ops/second in (3.564965,47.647322) seconds
+2026/05/26-09:34:24  ... thread 3: (17000,760000) ops and (4739.4,15944.9) ops/second in (3.586986,47.664268) seconds
+2026/05/26-09:34:24  ... thread 0: (14000,789000) ops and (3906.4,16553.3) ops/second in (3.583898,47.664170) seconds
+2026/05/26-09:34:25  ... thread 2: (31000,767000) ops and (30780.1,15764.8) ops/second in (1.007143,48.652705) seconds
+2026/05/26-09:34:25  ... thread 0: (28000,817000) ops and (23624.6,16724.9) ops/second in (1.185205,48.849375) seconds
+2026/05/26-09:34:25  ... thread 3: (38000,798000) ops and (31927.4,16334.2) ops/second in (1.190201,48.854469) seconds
+2026/05/26-09:34:25  ... thread 1: (26000,791000) ops and (21570.8,16191.5) ops/second in (1.205333,48.852655) seconds
+2026/05/26-09:34:26  ... thread 2: (21000,788000) ops and (20835.8,15867.7) ops/second in (1.007882,49.660587) seconds
+2026/05/26-09:34:27  ... thread 1: (24000,815000) ops and (20122.9,16285.2) ops/second in (1.192669,50.045324) seconds
+2026/05/26-09:34:27  ... thread 0: (29000,846000) ops and (24067.5,16901.6) ops/second in (1.204944,50.054319) seconds
+2026/05/26-09:34:27  ... thread 3: (48000,846000) ops and (39103.6,16892.3) ops/second in (1.227508,50.081977) seconds
+2026/05/26-09:34:29  ... thread 3: (15000,861000) ops and (5764.4,16342.7) ops/second in (2.602201,52.684178) seconds
+2026/05/26-09:34:29  ... thread 1: (19000,834000) ops and (7174.6,15827.4) ops/second in (2.648225,52.693549) seconds
+2026/05/26-09:34:29  ... thread 0: (16000,862000) ops and (6063.2,16358.9) ops/second in (2.638855,52.693174) seconds
+2026/05/26-09:34:29  ... thread 2: (18000,806000) ops and (5926.0,15294.7) ops/second in (3.037465,52.698052) seconds
+2026/05/26-09:34:30  ... thread 3: (20000,881000) ops and (19836.1,16408.3) ops/second in (1.008265,53.692443) seconds
+2026/05/26-09:34:30  ... thread 1: (26000,860000) ops and (25855.1,16015.1) ops/second in (1.005605,53.699154) seconds
+2026/05/26-09:34:30  ... thread 0: (25000,887000) ops and (24582.0,16514.6) ops/second in (1.017005,53.710179) seconds
+2026/05/26-09:34:30  ... thread 2: (22000,828000) ops and (21357.7,15410.9) ops/second in (1.030073,53.728125) seconds
+2026/05/26-09:34:31  ... thread 0: (24000,911000) ops and (23869.3,16649.7) ops/second in (1.005476,54.715655) seconds
+2026/05/26-09:34:31  ... thread 3: (23000,904000) ops and (22366.0,16520.2) ops/second in (1.028348,54.720791) seconds
+2026/05/26-09:34:31  ... thread 2: (21000,849000) ops and (20695.8,15508.9) ops/second in (1.014697,54.742822) seconds
+2026/05/26-09:34:31  ... thread 1: (23000,883000) ops and (21203.2,16117.9) ops/second in (1.084744,54.783898) seconds
+2026/05/26-09:34:32  ... thread 0: (20000,931000) ops and (19865.3,16707.8) ops/second in (1.006779,55.722434) seconds
+2026/05/26-09:34:32  ... thread 3: (18000,922000) ops and (17596.6,16540.0) ops/second in (1.022922,55.743713) seconds
+2026/05/26-09:34:32  ... thread 2: (18000,867000) ops and (16943.8,15536.2) ops/second in (1.062337,55.805159) seconds
+2026/05/26-09:34:32  ... thread 1: (19000,902000) ops and (18061.5,16154.5) ops/second in (1.051960,55.835858) seconds
+2026/05/26-09:34:33  ... thread 0: (26000,957000) ops and (25979.8,16871.4) ops/second in (1.000777,56.723211) seconds
+2026/05/26-09:34:33  ... thread 3: (24000,946000) ops and (23795.1,16668.9) ops/second in (1.008612,56.752325) seconds
+2026/05/26-09:34:33  ... thread 2: (23000,890000) ops and (22784.7,15665.0) ops/second in (1.009450,56.814609) seconds
+2026/05/26-09:34:33  ... thread 1: (23000,925000) ops and (21803.7,16259.2) ops/second in (1.054867,56.890725) seconds
+2026/05/26-09:34:34  ... thread 0: (25000,982000) ops and (24036.1,17000.4) ops/second in (1.040103,57.763314) seconds
+2026/05/26-09:34:34  ... thread 3: (27000,973000) ops and (25926.8,16835.7) ops/second in (1.041394,57.793719) seconds
+2026/05/26-09:34:34  ... thread 2: (29000,919000) ops and (28032.8,15886.2) ops/second in (1.034503,57.849112) seconds
+2026/05/26-09:34:34  ... thread 1: (29000,954000) ops and (28941.8,16478.8) ops/second in (1.002012,57.892737) seconds
+2026/05/26-09:34:35  ... thread 3: (26000,999000) ops and (25738.4,16988.7) ops/second in (1.010164,58.803883) seconds
+2026/05/26-09:34:35  ... thread 0: (25000,1007000) ops and (24099.9,17125.7) ops/second in (1.037349,58.800663) seconds
+2026/05/26-09:34:35  ... thread 2: (26000,945000) ops and (25489.7,16052.6) ops/second in (1.020019,58.869131) seconds
+2026/05/26-09:34:35  ... thread 1: (26000,980000) ops and (25875.5,16639.1) ops/second in (1.004813,58.897550) seconds
+2026/05/26-09:34:37  ... thread 3: (15000,1014000) ops and (10391.2,16830.6) ops/second in (1.443523,60.247406) seconds
+2026/05/26-09:34:37  ... thread 0: (16000,1023000) ops and (10342.4,16951.8) ops/second in (1.547034,60.347697) seconds
+2026/05/26-09:34:37  ... thread 2: (11000,956000) ops and (7399.8,15839.4) ops/second in (1.486528,60.355659) seconds
+2026/05/26-09:34:37  ... thread 1: (11000,991000) ops and (7528.9,16418.5) ops/second in (1.461041,60.358591) seconds
+2026/05/26-09:34:38  ... thread 2: (32000,988000) ops and (31849.0,16101.6) ops/second in (1.004742,61.360401) seconds
+2026/05/26-09:34:38  ... thread 0: (32000,1055000) ops and (31716.7,17194.6) ops/second in (1.008932,61.356629) seconds
+2026/05/26-09:34:38  ... thread 1: (30000,1021000) ops and (29974.4,16639.7) ops/second in (1.000854,61.359445) seconds
+2026/05/26-09:34:38  ... thread 3: (30000,1044000) ops and (26776.5,17012.2) ops/second in (1.120387,61.367793) seconds
+2026/05/26-09:34:39  ... thread 1: (16000,1037000) ops and (15773.2,16625.6) ops/second in (1.014379,62.373824) seconds
+2026/05/26-09:34:39  ... thread 2: (18000,1006000) ops and (16523.8,16109.0) ops/second in (1.089338,62.449739) seconds
+2026/05/26-09:34:39  ... thread 3: (16000,1060000) ops and (13278.6,16940.3) ops/second in (1.204946,62.572739) seconds
+2026/05/26-09:34:39  ... thread 0: (15000,1070000) ops and (10373.3,17037.5) ops/second in (1.446025,62.802654) seconds
+2026/05/26-09:34:40  ... thread 2: (2000,1008000) ops and (1721.5,15846.2) ops/second in (1.161787,63.611526) seconds
+2026/05/26-09:34:41  ... thread 3: (2000,1062000) ops and (1423.7,16599.6) ops/second in (1.404811,63.977550) seconds
+2026/05/26-09:34:41  ... thread 1: (2000,1039000) ops and (1143.7,16203.3) ops/second in (1.748749,64.122573) seconds
+2026/05/26-09:34:41  ... thread 0: (2000,1072000) ops and (1083.6,16582.0) ops/second in (1.845675,64.648329) seconds
+2026/05/26-09:34:41  ... thread 2: (4000,1012000) ops and (3163.1,15599.0) ops/second in (1.264563,64.876089) seconds
+2026/05/26-09:34:42  ... thread 0: (2000,1074000) ops and (1959.4,16354.7) ops/second in (1.020722,65.669051) seconds
+2026/05/26-09:34:42  ... thread 3: (2000,1064000) ops and (1108.8,16174.8) ops/second in (1.803733,65.781283) seconds
+2026/05/26-09:34:43  ... thread 2: (3000,1015000) ops and (2678.9,15379.7) ops/second in (1.119860,65.995949) seconds
+2026/05/26-09:34:43  ... thread 1: (2000,1041000) ops and (1025.0,15755.1) ops/second in (1.951139,66.073712) seconds
+2026/05/26-09:34:43  ... thread 0: (23000,1097000) ops and (22111.2,16444.5) ops/second in (1.040195,66.709246) seconds
+2026/05/26-09:34:43  ... thread 3: (24000,1088000) ops and (21460.6,16263.2) ops/second in (1.118331,66.899614) seconds
+2026/05/26-09:34:44  ... thread 2: (31000,1046000) ops and (30595.2,15609.8) ops/second in (1.013230,67.009179) seconds
+2026/05/26-09:34:44  ... thread 1: (33000,1074000) ops and (32585.4,16009.2) ops/second in (1.012725,67.086437) seconds
+2026/05/26-09:34:44  ... thread 0: (26000,1123000) ops and (25434.2,16580.2) ops/second in (1.022247,67.731493) seconds
+2026/05/26-09:34:45  ... thread 3: (29000,1117000) ops and (25056.5,16412.7) ops/second in (1.157386,68.057000) seconds
+2026/05/26-09:34:45  ... thread 2: (27000,1073000) ops and (25588.4,15764.5) ops/second in (1.055166,68.064345) seconds
+2026/05/26-09:34:45  ... thread 1: (27000,1101000) ops and (26992.9,16170.6) ops/second in (1.000262,68.086699) seconds
+2026/05/26-09:34:45  ... thread 0: (22000,1145000) ops and (21898.0,16657.9) ops/second in (1.004660,68.736153) seconds
+2026/05/26-09:34:46  ... thread 2: (25000,1098000) ops and (24964.4,15897.9) ops/second in (1.001427,69.065772) seconds
+2026/05/26-09:34:46  ... thread 3: (24000,1141000) ops and (23313.9,16515.5) ops/second in (1.029431,69.086431) seconds
+2026/05/26-09:34:46  ... thread 1: (26000,1127000) ops and (25065.9,16304.0) ops/second in (1.037267,69.123966) seconds
+2026/05/26-09:34:47  ... thread 2: (7000,1105000) ops and (6174.9,15740.9) ops/second in (1.133618,70.199390) seconds
+2026/05/26-09:34:47  ... thread 0: (16000,1161000) ops and (10134.3,16511.4) ops/second in (1.578795,70.314948) seconds
+2026/05/26-09:34:47  ... thread 3: (6000,1147000) ops and (3454.3,16195.2) ops/second in (1.736976,70.823407) seconds
+2026/05/26-09:34:47  ... thread 1: (4000,1131000) ops and (2343.3,15967.6) ops/second in (1.707006,70.830972) seconds
+2026/05/26-09:34:48  ... thread 2: (14000,1119000) ops and (13843.2,15713.9) ops/second in (1.011328,71.210718) seconds
+2026/05/26-09:34:48  ... thread 0: (19000,1180000) ops and (18292.1,16537.3) ops/second in (1.038699,71.353647) seconds
+2026/05/26-09:34:48  ... thread 1: (30000,1161000) ops and (28553.3,16151.6) ops/second in (1.050667,71.881639) seconds
+2026/05/26-09:34:48  ... thread 3: (30000,1177000) ops and (27840.0,16369.7) ops/second in (1.077588,71.900995) seconds
+2026/05/26-09:34:49  ... thread 2: (28000,1147000) ops and (27487.2,15880.0) ops/second in (1.018655,72.229373) seconds
+2026/05/26-09:34:50  ... thread 3: (16000,1193000) ops and (13913.3,16331.1) ops/second in (1.149980,73.050975) seconds
+2026/05/26-09:34:50  ... thread 1: (18000,1179000) ops and (15246.1,16136.9) ops/second in (1.180627,73.062266) seconds
+2026/05/26-09:34:50  ... thread 0: (28000,1208000) ops and (15085.7,16500.5) ops/second in (1.856062,73.209709) seconds
+2026/05/26-09:34:50  ... thread 2: (7000,1154000) ops and (4486.4,15639.0) ops/second in (1.560278,73.789651) seconds
+2026/05/26-09:34:51  ... thread 3: (1000,1194000) ops and (826.0,16078.3) ops/second in (1.210629,74.261604) seconds
+2026/05/26-09:34:51  ... thread 0: (3000,1211000) ops and (2468.2,16271.4) ops/second in (1.215446,74.425155) seconds
+2026/05/26-09:34:51  ... thread 1: (2000,1181000) ops and (1243.2,15816.0) ops/second in (1.608804,74.671070) seconds
+2026/05/26-09:34:51  ... thread 2: (3000,1157000) ops and (2976.4,15468.4) ops/second in (1.007938,74.797589) seconds
+2026/05/26-09:34:52  ... thread 3: (19000,1213000) ops and (18915.6,16116.2) ops/second in (1.004460,75.266064) seconds
+2026/05/26-09:34:52  ... thread 0: (25000,1236000) ops and (24950.6,16386.7) ops/second in (1.001981,75.427136) seconds
+2026/05/26-09:34:52  ... thread 1: (29000,1210000) ops and (25948.6,15965.4) ops/second in (1.117596,75.788666) seconds
+2026/05/26-09:34:52  ... thread 2: (28000,1185000) ops and (27812.7,15632.4) ops/second in (1.006736,75.804325) seconds
+2026/05/26-09:34:53  ... thread 3: (27000,1240000) ops and (23354.4,16225.7) ops/second in (1.156101,76.422165) seconds
+2026/05/26-09:34:55  ... thread 2: (43000,1228000) ops and (17509.2,15691.3) ops/second in (2.455851,78.260176) seconds
+Initializing RocksDB Options from the specified file
+Initializing RocksDB Options from command-line flags
+Integrated BlobDB: blob cache disabled
+Keys:       16 bytes each (+ 0 bytes user-defined timestamp)
+Values:     1024 bytes each (512 bytes after compression)
+Entries:    1250000
+Prefix:    0 bytes
+Keys per prefix:    0
+RawSize:    1239.8 MB (estimated)
+FileSize:   629.4 MB (estimated)
+Write rate: 0 bytes/second
+Read rate: 0 ops/second
+Compression: Snappy
+Compression sampling rate: 0
+Memtablerep: SkipListFactory
+Perf Level: 1
+WARNING: Assertions are enabled; benchmarks unnecessarily slow
+------------------------------------------------
+Initializing RocksDB Options from the specified file
+Initializing RocksDB Options from command-line flags
+Integrated BlobDB: blob cache disabled
+DB path: [/tmp/rocksdb_comp_exp_db]
+fillrandom   :      61.570 micros/op 63771 ops/sec 78.405 seconds 5000000 operations;   63.3 MB/s
+2026/05/26-09:35:03  ... thread 1: (1000,1000) ops and (132.0,132.0) ops/second in (7.573034,7.573034) seconds
+2026/05/26-09:35:03  ... thread 0: (1000,1000) ops and (130.2,130.2) ops/second in (7.680550,7.680550) seconds
+2026/05/26-09:35:03  ... thread 3: (1000,1000) ops and (130.0,130.0) ops/second in (7.689886,7.689886) seconds
+2026/05/26-09:35:03  ... thread 2: (1000,1000) ops and (127.3,127.3) ops/second in (7.856999,7.856999) seconds
+2026/05/26-09:35:16  ... thread 0: (1000,2000) ops and (74.6,94.9) ops/second in (13.396638,21.077188) seconds
+2026/05/26-09:35:16  ... thread 1: (1000,2000) ops and (73.1,94.1) ops/second in (13.687916,21.260950) seconds
+2026/05/26-09:35:16  ... thread 3: (1000,2000) ops and (73.4,93.9) ops/second in (13.616875,21.306761) seconds
+2026/05/26-09:35:17  ... thread 2: (1000,2000) ops and (72.7,92.6) ops/second in (13.748334,21.605333) seconds
+2026/05/26-09:35:29  ... thread 0: (1000,3000) ops and (77.6,88.3) ops/second in (12.887988,33.965176) seconds
+2026/05/26-09:35:31  ... thread 1: (1000,3000) ops and (66.8,82.8) ops/second in (14.964226,36.225176) seconds
+2026/05/26-09:35:31  ... thread 3: (1000,3000) ops and (66.6,82.6) ops/second in (15.023295,36.330056) seconds
+2026/05/26-09:35:32  ... thread 2: (1000,3000) ops and (65.9,81.6) ops/second in (15.166886,36.772219) seconds
+2026/05/26-09:35:34  ... thread 0: (1000,4000) ops and (185.4,101.6) ops/second in (5.393983,39.359159) seconds
+2026/05/26-09:35:34  ... thread 1: (1000,4000) ops and (304.2,101.2) ops/second in (3.286773,39.511949) seconds
+2026/05/26-09:35:34  ... thread 3: (1000,4000) ops and (314.1,101.2) ops/second in (3.183706,39.513762) seconds
+2026/05/26-09:35:35  ... thread 2: (1000,4000) ops and (315.9,100.2) ops/second in (3.165409,39.937628) seconds
+2026/05/26-09:35:36  ... thread 0: (1000,5000) ops and (461.4,120.4) ops/second in (2.167391,41.526550) seconds
+2026/05/26-09:35:37  ... thread 1: (1000,5000) ops and (365.3,118.3) ops/second in (2.737111,42.249060) seconds
+2026/05/26-09:35:37  ... thread 3: (1000,5000) ops and (360.6,118.2) ops/second in (2.772900,42.286662) seconds
+2026/05/26-09:35:38  ... thread 2: (1000,5000) ops and (361.2,117.1) ops/second in (2.768837,42.706465) seconds
+2026/05/26-09:35:39  ... thread 1: (1000,6000) ops and (601.1,136.6) ops/second in (1.663711,43.912771) seconds
+2026/05/26-09:35:39  ... thread 0: (1000,6000) ops and (412.4,136.5) ops/second in (2.424760,43.951310) seconds
+2026/05/26-09:35:39  ... thread 3: (1000,6000) ops and (544.5,136.0) ops/second in (1.836565,44.123227) seconds
+2026/05/26-09:35:39  ... thread 2: (1000,6000) ops and (571.9,135.0) ops/second in (1.748674,44.455139) seconds
+2026/05/26-09:35:42  ... thread 0: (1000,7000) ops and (344.6,149.4) ops/second in (2.902007,46.853317) seconds
+2026/05/26-09:35:42  ... thread 1: (1000,7000) ops and (330.6,149.1) ops/second in (3.025016,46.937787) seconds
+2026/05/26-09:35:42  ... thread 3: (1000,7000) ops and (342.9,148.8) ops/second in (2.915994,47.039221) seconds
+2026/05/26-09:35:42  ... thread 2: (1000,7000) ops and (328.7,147.4) ops/second in (3.041932,47.497071) seconds
+2026/05/26-09:35:45  ... thread 0: (1000,8000) ops and (340.1,160.7) ops/second in (2.940408,49.793725) seconds
+2026/05/26-09:35:45  ... thread 1: (1000,8000) ops and (344.6,160.5) ops/second in (2.901799,49.839586) seconds
+2026/05/26-09:35:45  ... thread 3: (1000,8000) ops and (328.4,159.7) ops/second in (3.045139,50.084360) seconds
+2026/05/26-09:35:45  ... thread 2: (1000,8000) ops and (344.4,158.7) ops/second in (2.903472,50.400543) seconds
+2026/05/26-09:35:48  ... thread 0: (1000,9000) ops and (321.0,170.1) ops/second in (3.115317,52.909042) seconds
+2026/05/26-09:35:48  ... thread 1: (1000,9000) ops and (318.0,169.9) ops/second in (3.144530,52.984116) seconds
+2026/05/26-09:35:48  ... thread 3: (1000,9000) ops and (334.1,169.6) ops/second in (2.993410,53.077770) seconds
+2026/05/26-09:35:48  ... thread 2: (1000,9000) ops and (340.7,168.7) ops/second in (2.935485,53.336028) seconds
+2026/05/26-09:35:50  ... thread 0: (1000,10000) ops and (387.6,180.2) ops/second in (2.580077,55.489119) seconds
+2026/05/26-09:35:50  ... thread 1: (1000,10000) ops and (394.4,180.1) ops/second in (2.535179,55.519295) seconds
+2026/05/26-09:35:51  ... thread 3: (1000,10000) ops and (381.9,179.5) ops/second in (2.618632,55.696402) seconds
+2026/05/26-09:35:51  ... thread 2: (1000,10000) ops and (391.2,178.9) ops/second in (2.556434,55.892462) seconds
+2026/05/26-09:35:53  ... thread 0: (1000,11000) ops and (481.4,191.1) ops/second in (2.077347,57.566466) seconds
+2026/05/26-09:35:53  ... thread 1: (1000,11000) ops and (480.9,191.0) ops/second in (2.079220,57.598515) seconds
+2026/05/26-09:35:53  ... thread 3: (1000,11000) ops and (450.2,189.9) ops/second in (2.221115,57.917517) seconds
+2026/05/26-09:35:53  ... thread 2: (1000,11000) ops and (447.6,189.2) ops/second in (2.234213,58.126675) seconds
+2026/05/26-09:35:56  ... thread 0: (1000,12000) ops and (276.2,196.1) ops/second in (3.620308,61.186774) seconds
+2026/05/26-09:35:56  ... thread 1: (1000,12000) ops and (268.3,195.7) ops/second in (3.727649,61.326164) seconds
+2026/05/26-09:35:57  ... thread 3: (1000,12000) ops and (268.0,194.7) ops/second in (3.731422,61.648939) seconds
+2026/05/26-09:35:57  ... thread 2: (1000,12000) ops and (264.4,193.8) ops/second in (3.782172,61.908847) seconds
+2026/05/26-09:35:58  ... thread 0: (1000,13000) ops and (526.1,206.1) ops/second in (1.900737,63.087511) seconds
+2026/05/26-09:35:58  ... thread 1: (1000,13000) ops and (564.1,206.0) ops/second in (1.772824,63.098988) seconds
+2026/05/26-09:35:59  ... thread 3: (1000,13000) ops and (477.5,203.9) ops/second in (2.094351,63.743290) seconds
+2026/05/26-09:35:59  ... thread 2: (1000,13000) ops and (518.6,203.6) ops/second in (1.928331,63.837178) seconds
+2026/05/26-09:35:59  ... thread 0: (1000,14000) ops and (799.6,217.6) ops/second in (1.250573,64.338084) seconds
+2026/05/26-09:35:59  ... thread 1: (1000,14000) ops and (748.1,217.3) ops/second in (1.336680,64.435668) seconds
+2026/05/26-09:36:00  ... thread 0: (1000,15000) ops and (918.2,229.3) ops/second in (1.089135,65.427219) seconds
+2026/05/26-09:36:00  ... thread 1: (1000,15000) ops and (993.8,229.2) ops/second in (1.006272,65.441940) seconds
+2026/05/26-09:36:00  ... thread 2: (2000,15000) ops and (1189.1,228.9) ops/second in (1.681973,65.519151) seconds
+2026/05/26-09:36:00  ... thread 3: (2000,15000) ops and (1126.3,228.9) ops/second in (1.775797,65.519087) seconds
+2026/05/26-09:36:02  ... thread 1: (3000,18000) ops and (2071.7,269.1) ops/second in (1.448072,66.890012) seconds
+2026/05/26-09:36:02  ... thread 0: (3000,18000) ops and (1960.6,268.8) ops/second in (1.530162,66.957381) seconds
+2026/05/26-09:36:02  ... thread 3: (3000,18000) ops and (2049.7,268.7) ops/second in (1.463612,66.982699) seconds
+2026/05/26-09:36:02  ... thread 2: (3000,18000) ops and (2017.5,268.6) ops/second in (1.486981,67.006132) seconds
+2026/05/26-09:36:03  ... thread 2: (2000,20000) ops and (1882.7,293.8) ops/second in (1.062310,68.068442) seconds
+2026/05/26-09:36:03  ... thread 1: (3000,21000) ops and (2420.7,308.2) ops/second in (1.239307,68.129319) seconds
+2026/05/26-09:36:03  ... thread 0: (3000,21000) ops and (2511.3,308.1) ops/second in (1.194597,68.151978) seconds
+2026/05/26-09:36:03  ... thread 3: (3000,21000) ops and (2492.9,308.0) ops/second in (1.203421,68.186120) seconds
+2026/05/26-09:36:04  ... thread 2: (7000,27000) ops and (6619.6,390.6) ops/second in (1.057462,69.125904) seconds
+2026/05/26-09:36:04  ... thread 1: (7000,28000) ops and (6494.8,404.6) ops/second in (1.077782,69.207101) seconds
+2026/05/26-09:36:04  ... thread 3: (7000,28000) ops and (6723.5,404.5) ops/second in (1.041118,69.227238) seconds
+2026/05/26-09:36:04  ... thread 0: (7000,28000) ops and (6367.9,404.3) ops/second in (1.099257,69.251235) seconds
+2026/05/26-09:36:05  ... thread 2: (8000,35000) ops and (7278.2,498.4) ops/second in (1.099176,70.225080) seconds
+2026/05/26-09:36:05  ... thread 3: (8000,36000) ops and (7785.6,512.4) ops/second in (1.027533,70.254771) seconds
+2026/05/26-09:36:05  ... thread 1: (8000,36000) ops and (7529.6,512.3) ops/second in (1.062467,70.269568) seconds
+2026/05/26-09:36:05  ... thread 0: (9000,37000) ops and (8281.2,526.0) ops/second in (1.086800,70.338035) seconds
+2026/05/26-09:36:06  ... thread 2: (9000,44000) ops and (8963.4,617.7) ops/second in (1.004085,71.229165) seconds
+2026/05/26-09:36:06  ... thread 3: (9000,45000) ops and (8937.3,631.5) ops/second in (1.007010,71.261781) seconds
+2026/05/26-09:36:06  ... thread 1: (10000,46000) ops and (9384.2,644.8) ops/second in (1.065618,71.335186) seconds
+2026/05/26-09:36:06  ... thread 0: (9000,46000) ops and (8827.5,644.6) ops/second in (1.019538,71.357573) seconds
+2026/05/26-09:36:07  ... thread 2: (10000,54000) ops and (9784.4,747.4) ops/second in (1.022040,72.251205) seconds
+2026/05/26-09:36:07  ... thread 3: (11000,56000) ops and (10653.5,774.6) ops/second in (1.032520,72.294301) seconds
+2026/05/26-09:36:07  ... thread 1: (11000,57000) ops and (10419.5,787.4) ops/second in (1.055715,72.390901) seconds
+2026/05/26-09:36:07  ... thread 0: (10000,56000) ops and (9635.9,773.5) ops/second in (1.037784,72.395357) seconds
+2026/05/26-09:36:08  ... thread 2: (13000,67000) ops and (12376.7,914.0) ops/second in (1.050365,73.301570) seconds
+2026/05/26-09:36:08  ... thread 3: (13000,69000) ops and (12814.4,941.2) ops/second in (1.014481,73.308782) seconds
+2026/05/26-09:36:08  ... thread 1: (13000,70000) ops and (12492.6,953.3) ops/second in (1.040620,73.431521) seconds
+2026/05/26-09:36:08  ... thread 0: (13000,69000) ops and (12248.5,939.3) ops/second in (1.061354,73.456711) seconds
+2026/05/26-09:36:09  ... thread 3: (14000,83000) ops and (13962.0,1116.9) ops/second in (1.002724,74.311506) seconds
+2026/05/26-09:36:09  ... thread 2: (14000,81000) ops and (13173.5,1089.2) ops/second in (1.062738,74.364308) seconds
+2026/05/26-09:36:09  ... thread 1: (15000,85000) ops and (14449.9,1141.4) ops/second in (1.038073,74.469594) seconds
+2026/05/26-09:36:09  ... thread 0: (15000,84000) ops and (14688.4,1127.9) ops/second in (1.021216,74.477927) seconds
+2026/05/26-09:36:10  ... thread 3: (17000,100000) ops and (16327.5,1327.1) ops/second in (1.041187,75.352693) seconds
+2026/05/26-09:36:10  ... thread 2: (17000,98000) ops and (16276.1,1299.6) ops/second in (1.044474,75.408782) seconds
+2026/05/26-09:36:10  ... thread 0: (16000,100000) ops and (15771.5,1324.6) ops/second in (1.014489,75.492416) seconds
+DB path: [/tmp/rocksdb_comp_exp_db]
+readrandom   :     754.525 micros/op 5297 ops/sec 75.508 seconds 400000 operations;    5.2 MB/s (98145 of 100000 found)
+
+STATISTICS:
+rocksdb.block.cache.miss COUNT : 3773925
+rocksdb.block.cache.hit COUNT : 30991
+rocksdb.block.cache.add COUNT : 452188
+rocksdb.block.cache.add.failures COUNT : 0
+rocksdb.block.cache.index.miss COUNT : 0
+rocksdb.block.cache.index.hit COUNT : 0
+rocksdb.block.cache.index.add COUNT : 0
+rocksdb.block.cache.index.bytes.insert COUNT : 0
+rocksdb.block.cache.filter.miss COUNT : 0
+rocksdb.block.cache.filter.hit COUNT : 0
+rocksdb.block.cache.filter.add COUNT : 0
+rocksdb.block.cache.filter.bytes.insert COUNT : 0
+rocksdb.block.cache.data.miss COUNT : 3773925
+rocksdb.block.cache.data.hit COUNT : 30991
+rocksdb.block.cache.data.add COUNT : 452188
+rocksdb.block.cache.data.bytes.insert COUNT : 1946205120
+rocksdb.block.cache.bytes.read COUNT : 133382288
+rocksdb.block.cache.bytes.write COUNT : 1946205120
+rocksdb.block.cache.compression.dict.miss COUNT : 0
+rocksdb.block.cache.compression.dict.hit COUNT : 0
+rocksdb.block.cache.compression.dict.add COUNT : 0
+rocksdb.block.cache.compression.dict.bytes.insert COUNT : 0
+rocksdb.block.cache.add.redundant COUNT : 3
+rocksdb.block.cache.index.add.redundant COUNT : 0
+rocksdb.block.cache.filter.add.redundant COUNT : 0
+rocksdb.block.cache.data.add.redundant COUNT : 3
+rocksdb.block.cache.compression.dict.add.redundant COUNT : 0
+rocksdb.secondary.cache.hits COUNT : 0
+rocksdb.secondary.cache.filter.hits COUNT : 0
+rocksdb.secondary.cache.index.hits COUNT : 0
+rocksdb.secondary.cache.data.hits COUNT : 0
+rocksdb.compressed.secondary.cache.dummy.hits COUNT : 0
+rocksdb.compressed.secondary.cache.hits COUNT : 0
+rocksdb.compressed.secondary.cache.promotions COUNT : 0
+rocksdb.compressed.secondary.cache.promotion.skips COUNT : 0
+rocksdb.bloom.filter.useful COUNT : 0
+rocksdb.bloom.filter.full.positive COUNT : 0
+rocksdb.bloom.filter.full.true.positive COUNT : 0
+rocksdb.bloom.filter.prefix.checked COUNT : 0
+rocksdb.bloom.filter.prefix.useful COUNT : 0
+rocksdb.bloom.filter.prefix.true.positive COUNT : 0
+rocksdb.persistent.cache.hit COUNT : 0
+rocksdb.persistent.cache.miss COUNT : 0
+rocksdb.sim.block.cache.hit COUNT : 0
+rocksdb.sim.block.cache.miss COUNT : 0
+rocksdb.memtable.hit COUNT : 7207
+rocksdb.memtable.miss COUNT : 392793
+rocksdb.l0.hit COUNT : 34039
+rocksdb.l1.hit COUNT : 106203
+rocksdb.l2andup.hit COUNT : 245043
+rocksdb.compaction.key.drop.new COUNT : 3335179
+rocksdb.compaction.key.drop.obsolete COUNT : 0
+rocksdb.compaction.key.drop.range_del COUNT : 0
+rocksdb.compaction.key.drop.user COUNT : 0
+rocksdb.compaction.range_del.drop.obsolete COUNT : 0
+rocksdb.compaction.optimized.del.drop.obsolete COUNT : 0
+rocksdb.compaction.cancelled COUNT : 0
+rocksdb.compaction.aborted COUNT : 0
+rocksdb.number.keys.written COUNT : 5000000
+rocksdb.number.keys.read COUNT : 400000
+rocksdb.number.keys.updated COUNT : 0
+rocksdb.bytes.written COUNT : 5277857880
+rocksdb.bytes.read COUNT : 401911808
+rocksdb.number.db.seek COUNT : 0
+rocksdb.number.db.next COUNT : 0
+rocksdb.number.db.prev COUNT : 0
+rocksdb.number.db.seek.found COUNT : 0
+rocksdb.number.db.next.found COUNT : 0
+rocksdb.number.db.prev.found COUNT : 0
+rocksdb.db.iter.bytes.read COUNT : 0
+rocksdb.number.iter.skip COUNT : 0
+rocksdb.number.reseeks.iteration COUNT : 0
+rocksdb.num.iterator.created COUNT : 0
+rocksdb.num.iterator.deleted COUNT : 0
+rocksdb.no.file.opens COUNT : 133
+rocksdb.no.file.errors COUNT : 0
+rocksdb.stall.micros COUNT : 43390936
+rocksdb.db.mutex.wait.micros COUNT : 0
+rocksdb.number.multiget.get COUNT : 0
+rocksdb.number.multiget.keys.read COUNT : 0
+rocksdb.number.multiget.bytes.read COUNT : 0
+rocksdb.number.multiget.keys.found COUNT : 0
+rocksdb.number.merge.failures COUNT : 0
+rocksdb.getupdatessince.calls COUNT : 0
+rocksdb.wal.synced COUNT : 0
+rocksdb.wal.bytes COUNT : 5277857880
+rocksdb.write.self COUNT : 4821490
+rocksdb.write.other COUNT : 178510
+rocksdb.write.wal COUNT : 5000000
+rocksdb.compact.read.bytes COUNT : 8115513341
+rocksdb.compact.write.bytes COUNT : 6131244360
+rocksdb.flush.write.bytes COUNT : 2971286400
+rocksdb.compact.read.marked.bytes COUNT : 0
+rocksdb.compact.read.periodic.bytes COUNT : 0
+rocksdb.compact.read.ttl.bytes COUNT : 0
+rocksdb.compact.write.marked.bytes COUNT : 0
+rocksdb.compact.write.periodic.bytes COUNT : 0
+rocksdb.compact.write.ttl.bytes COUNT : 0
+rocksdb.number.direct.load.table.properties COUNT : 0
+rocksdb.number.superversion_acquires COUNT : 47
+rocksdb.number.superversion_releases COUNT : 43
+rocksdb.number.superversion_cleanups COUNT : 11
+rocksdb.number.block.compressed COUNT : 3722020
+rocksdb.number.block.decompressed COUNT : 3774058
+rocksdb.bytes.compressed.from COUNT : 15687871903
+rocksdb.bytes.compressed.to COUNT : 9083742095
+rocksdb.bytes.compression_bypassed COUNT : 0
+rocksdb.bytes.compression.rejected COUNT : 0
+rocksdb.number.block_compression_bypassed COUNT : 0
+rocksdb.number.block_compression_rejected COUNT : 0
+rocksdb.bytes.decompressed.from COUNT : 9210008128
+rocksdb.bytes.decompressed.to COUNT : 15906189490
+rocksdb.merge.operation.time.nanos COUNT : 0
+rocksdb.filter.operation.time.nanos COUNT : 0
+rocksdb.compaction.total.time.cpu_micros COUNT : 46838839
+rocksdb.row.cache.hit COUNT : 0
+rocksdb.row.cache.miss COUNT : 0
+rocksdb.read.amp.estimate.useful.bytes COUNT : 0
+rocksdb.read.amp.total.read.bytes COUNT : 0
+rocksdb.number.rate_limiter.drains COUNT : 0
+rocksdb.blobdb.num.put COUNT : 0
+rocksdb.blobdb.num.write COUNT : 0
+rocksdb.blobdb.num.get COUNT : 0
+rocksdb.blobdb.num.multiget COUNT : 0
+rocksdb.blobdb.num.seek COUNT : 0
+rocksdb.blobdb.num.next COUNT : 0
+rocksdb.blobdb.num.prev COUNT : 0
+rocksdb.blobdb.num.keys.written COUNT : 0
+rocksdb.blobdb.num.keys.read COUNT : 0
+rocksdb.blobdb.bytes.written COUNT : 0
+rocksdb.blobdb.bytes.read COUNT : 0
+rocksdb.blobdb.write.inlined COUNT : 0
+rocksdb.blobdb.write.inlined.ttl COUNT : 0
+rocksdb.blobdb.write.blob COUNT : 0
+rocksdb.blobdb.write.blob.ttl COUNT : 0
+rocksdb.blobdb.blob.file.bytes.written COUNT : 0
+rocksdb.blobdb.blob.file.bytes.read COUNT : 0
+rocksdb.blobdb.blob.file.synced COUNT : 0
+rocksdb.blobdb.blob.index.expired.count COUNT : 0
+rocksdb.blobdb.blob.index.expired.size COUNT : 0
+rocksdb.blobdb.blob.index.evicted.count COUNT : 0
+rocksdb.blobdb.blob.index.evicted.size COUNT : 0
+rocksdb.blobdb.gc.num.files COUNT : 0
+rocksdb.blobdb.gc.num.new.files COUNT : 0
+rocksdb.blobdb.gc.failures COUNT : 0
+rocksdb.blobdb.gc.num.keys.relocated COUNT : 0
+rocksdb.blobdb.gc.bytes.relocated COUNT : 0
+rocksdb.blobdb.fifo.num.files.evicted COUNT : 0
+rocksdb.blobdb.fifo.num.keys.evicted COUNT : 0
+rocksdb.blobdb.fifo.bytes.evicted COUNT : 0
+rocksdb.blobdb.cache.miss COUNT : 0
+rocksdb.blobdb.cache.hit COUNT : 0
+rocksdb.blobdb.cache.add COUNT : 0
+rocksdb.blobdb.cache.add.failures COUNT : 0
+rocksdb.blobdb.cache.bytes.read COUNT : 0
+rocksdb.blobdb.cache.bytes.write COUNT : 0
+rocksdb.txn.overhead.mutex.prepare COUNT : 0
+rocksdb.txn.overhead.mutex.old.commit.map COUNT : 0
+rocksdb.txn.overhead.duplicate.key COUNT : 0
+rocksdb.txn.overhead.mutex.snapshot COUNT : 0
+rocksdb.txn.get.tryagain COUNT : 0
+rocksdb.files.marked.trash COUNT : 0
+rocksdb.files.marked.trash.deleted COUNT : 0
+rocksdb.files.deleted.immediately COUNT : 199
+rocksdb.error.handler.bg.error.count COUNT : 0
+rocksdb.error.handler.bg.io.error.count COUNT : 0
+rocksdb.error.handler.bg.retryable.io.error.count COUNT : 0
+rocksdb.error.handler.autoresume.count COUNT : 0
+rocksdb.error.handler.autoresume.retry.total.count COUNT : 0
+rocksdb.error.handler.autoresume.success.count COUNT : 0
+rocksdb.memtable.payload.bytes.at.flush COUNT : 5216109792
+rocksdb.memtable.garbage.bytes.at.flush COUNT : 127268072
+rocksdb.verify_checksum.read.bytes COUNT : 0
+rocksdb.backup.read.bytes COUNT : 0
+rocksdb.backup.write.bytes COUNT : 0
+rocksdb.remote.compact.read.bytes COUNT : 0
+rocksdb.remote.compact.write.bytes COUNT : 0
+rocksdb.remote.compact.resumed.bytes COUNT : 0
+rocksdb.hot.file.read.bytes COUNT : 0
+rocksdb.warm.file.read.bytes COUNT : 0
+rocksdb.cool.file.read.bytes COUNT : 0
+rocksdb.cold.file.read.bytes COUNT : 0
+rocksdb.ice.file.read.bytes COUNT : 0
+rocksdb.hot.file.read.count COUNT : 0
+rocksdb.warm.file.read.count COUNT : 0
+rocksdb.cool.file.read.count COUNT : 0
+rocksdb.cold.file.read.count COUNT : 0
+rocksdb.ice.file.read.count COUNT : 0
+rocksdb.last.level.read.bytes COUNT : 0
+rocksdb.last.level.read.count COUNT : 0
+rocksdb.non.last.level.read.bytes COUNT : 9229045596
+rocksdb.non.last.level.read.count COUNT : 3774457
+rocksdb.last.level.seek.filtered COUNT : 0
+rocksdb.last.level.seek.filter.match COUNT : 0
+rocksdb.last.level.seek.data COUNT : 0
+rocksdb.last.level.seek.data.useful.no.filter COUNT : 0
+rocksdb.last.level.seek.data.useful.filter.match COUNT : 0
+rocksdb.non.last.level.seek.filtered COUNT : 0
+rocksdb.non.last.level.seek.filter.match COUNT : 0
+rocksdb.non.last.level.seek.data COUNT : 0
+rocksdb.non.last.level.seek.data.useful.no.filter COUNT : 0
+rocksdb.non.last.level.seek.data.useful.filter.match COUNT : 0
+rocksdb.block.checksum.compute.count COUNT : 3774191
+rocksdb.block.checksum.mismatch.count COUNT : 0
+rocksdb.multiget.coroutine.count COUNT : 0
+rocksdb.read.async.micros COUNT : 0
+rocksdb.async.read.error.count COUNT : 0
+rocksdb.table.open.prefetch.tail.miss COUNT : 0
+rocksdb.table.open.prefetch.tail.hit COUNT : 0
+rocksdb.timestamp.filter.table.checked COUNT : 0
+rocksdb.timestamp.filter.table.filtered COUNT : 0
+rocksdb.readahead.trimmed COUNT : 0
+rocksdb.fifo.max.size.compactions COUNT : 0
+rocksdb.fifo.ttl.compactions COUNT : 0
+rocksdb.fifo.change_temperature.compactions COUNT : 0
+rocksdb.prefetch.bytes COUNT : 0
+rocksdb.prefetch.bytes.useful COUNT : 0
+rocksdb.prefetch.hits COUNT : 0
+rocksdb.footer.corruption.count COUNT : 0
+rocksdb.file.read.corruption.retry.count COUNT : 0
+rocksdb.file.read.corruption.retry.success.count COUNT : 0
+rocksdb.number.wbwi.ingest COUNT : 0
+rocksdb.sst.user.defined.index.load.fail.count COUNT : 0
+rocksdb.multiscan.prepare.calls COUNT : 0
+rocksdb.multiscan.prepare.errors COUNT : 0
+rocksdb.multiscan.blocks.prefetched COUNT : 0
+rocksdb.multiscan.blocks.from.cache COUNT : 0
+rocksdb.multiscan.prefetch.bytes COUNT : 0
+rocksdb.multiscan.prefetch.blocks.wasted COUNT : 0
+rocksdb.multiscan.io.requests COUNT : 0
+rocksdb.multiscan.io.coalesced.nonadjacent COUNT : 0
+rocksdb.multiscan.seek.errors COUNT : 0
+rocksdb.prefetch.memory.bytes.granted COUNT : 0
+rocksdb.prefetch.memory.bytes.released COUNT : 0
+rocksdb.prefetch.memory.requests.blocked COUNT : 0
+rocksdb.read.path.range.tombstones.inserted COUNT : 0
+rocksdb.read.path.range.tombstones.discarded COUNT : 0
+rocksdb.file.open.metadata.retrieved COUNT : 0
+rocksdb.file.open.metadata.passed COUNT : 0
+rocksdb.manifest.validation.failure.count COUNT : 0
+rocksdb.db.get.micros P50 : 12.941096 P95 : 1686.722689 P99 : 12841.030241 P100 : 1059677.000000 COUNT : 400000 SUM : 301553382
+rocksdb.db.write.micros P50 : 4.753028 P95 : 41.464707 P99 : 342.593402 P100 : 3157395.000000 COUNT : 4999379 SUM : 303772681
+rocksdb.compaction.times.micros P50 : 4850000.000000 P95 : 29700000.000000 P99 : 67500000.000000 P100 : 68856233.000000 COUNT : 26 SUM : 233197139
+rocksdb.compaction.times.cpu_micros P50 : 1098000.000000 P95 : 7655000.000000 P99 : 7687317.000000 P100 : 7687317.000000 COUNT : 26 SUM : 46838839
+rocksdb.subcompaction.setup.times.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.table.sync.micros P50 : 356122.448980 P95 : 1180000.000000 P99 : 2265115.000000 P100 : 2265115.000000 COUNT : 80 SUM : 45087067
+rocksdb.compaction.outfile.sync.micros P50 : 821842.105263 P95 : 2605555.555556 P99 : 2721946.000000 P100 : 2721946.000000 COUNT : 53 SUM : 57220563
+rocksdb.wal.file.sync.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.manifest.file.sync.micros P50 : 5891.525424 P95 : 152000.000000 P99 : 1159200.000000 P100 : 1550197.000000 COUNT : 112 SUM : 4726278
+rocksdb.table.open.io.micros P50 : 813.035714 P95 : 7892.500000 P99 : 19360.000000 P100 : 44205.000000 COUNT : 133 SUM : 255695
+rocksdb.db.multiget.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.read.block.compaction.micros P50 : 3.175069 P95 : 6.959027 P99 : 14.871941 P100 : 568191.000000 COUNT : 3321737 SUM : 134174717
+rocksdb.read.block.get.micros P50 : 6.910591 P95 : 1738.343854 P99 : 12245.182018 P100 : 567799.000000 COUNT : 452321 SUM : 297971904
+rocksdb.write.raw.block.micros P50 : 0.532015 P95 : 1.238703 P99 : 2.717594 P100 : 350027.000000 COUNT : 3722286 SUM : 12801328
+rocksdb.numfiles.in.singlecompaction P50 : 3.642857 P95 : 9.466667 P99 : 12.000000 P100 : 12.000000 COUNT : 28 SUM : 127
+rocksdb.db.seek.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.db.write.stall P50 : 1132.522194 P95 : 2667.666232 P99 : 133242.105263 P100 : 3155791.000000 COUNT : 5364 SUM : 43390936
+rocksdb.sst.read.micros P50 : 0.770624 P95 : 3.625871 P99 : 1560.953225 P100 : 568172.000000 COUNT : 3774457 SUM : 419222675
+rocksdb.file.read.flush.micros P50 : 3.428571 P95 : 69.589744 P99 : 95.040000 P100 : 786.000000 COUNT : 320 SUM : 6412
+rocksdb.file.read.compaction.micros P50 : 0.696493 P95 : 2.053763 P99 : 7.448892 P100 : 568172.000000 COUNT : 3321949 SUM : 124453180
+rocksdb.file.read.db.open.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.file.read.get.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.file.read.multiget.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.file.read.db.iterator.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.file.read.verify.db.checksum.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.file.read.verify.file.checksums.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.sst.write.micros P50 : 0.502108 P95 : 0.954005 P99 : 0.994173 P100 : 350026.000000 COUNT : 7444705 SUM : 10839847
+rocksdb.file.write.flush.micros P50 : 0.501404 P95 : 0.952667 P99 : 0.992779 P100 : 8008.000000 COUNT : 2428500 SUM : 3093175
+rocksdb.file.write.compaction.micros P50 : 0.502449 P95 : 0.954654 P99 : 0.994850 P100 : 350026.000000 COUNT : 5016205 SUM : 7746672
+rocksdb.file.write.db.open.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.num.subcompactions.scheduled P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.bytes.per.read P50 : 1024.000000 P95 : 1024.000000 P99 : 1024.000000 P100 : 1024.000000 COUNT : 400000 SUM : 401911808
+rocksdb.bytes.per.write P50 : 1089.024999 P95 : 1286.147498 P99 : 3094.471722 P100 : 4188.000000 COUNT : 4821490 SUM : 5277857880
+rocksdb.bytes.per.multiget P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.compression.times.nanos P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.decompression.times.nanos P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.read.num.merge_operands P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.key.size P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.value.size P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.write.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.get.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.multiget.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.seek.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.next.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.prev.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.blob.file.write.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.blob.file.read.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.blob.file.sync.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.compression.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.blobdb.decompression.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.db.flush.micros P50 : 671500.000000 P95 : 1900000.000000 P99 : 2494373.000000 P100 : 2494373.000000 COUNT : 80 SUM : 64249182
+rocksdb.sst.batch.size P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.multiget.io.batch.size P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.num.index.and.filter.blocks.read.per.level P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.num.sst.read.per.level P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.num.level.read.per.multiget P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.error.handler.autoresume.retry.count P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.async.read.bytes P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.poll.wait.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.compaction.prefetch.bytes P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.prefetched.bytes.discarded P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.async.prefetch.abort.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.table.open.prefetch.tail.read.bytes P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.num.op.per.transaction P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.multiscan.op.prepare.iterators.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.multiscan.prepare.micros P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.multiscan.blocks.per.prepare P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+rocksdb.block.key.distribution.cv P50 : 0.000000 P95 : 0.000000 P99 : 0.000000 P100 : 0.000000 COUNT : 0 SUM : 0
+
+[EXPERIMENT_COMPLETED]
