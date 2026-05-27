@@ -23,7 +23,7 @@ LOG_DIR = f"{home_dir}/rocksdb/experiment2/results/logs"
 OUT_DIR = f"{home_dir}/rocksdb/experiment2/results/aggregated"
 os.makedirs(OUT_DIR, exist_ok=True)
 
-# ── [0~9번 순서대로 정렬된 실험 매핑] ───────────────────────────
+# ── [0~10번 순서대로 정렬된 실험 매핑] ───────────────────────────
 exp_configs = {
     'exp0_default':              ('0. 기본값 (Default Baseline)', 'gray', '--'),
     'exp1_thread_1':             ('1. 단일 스레드 (Threads=1)', 'brown', '-'),
@@ -34,7 +34,8 @@ exp_configs = {
     'exp6_pending_compaction':   ('6. Pending Compaction 병목', 'magenta', '-'),
     'exp7_universal_compaction': ('7. Universal Compaction', 'teal', '--'),
     'exp8_direct_io':            ('8. Direct I/O (OS캐시 배제)', 'blue', '--'),
-    'exp9_sync_commit':          ('9. Sync Commit (fsync 강제)', 'black', '-.')
+    'exp9_sync_commit':          ('9. Sync Commit (fsync 강제)', 'black', '-.'),
+    'exp10_flush_threads':       ('10. 플러시 스레드 증가 (Flush=4)', 'olive', '-')
 }
 # ────────────────────────────────────────────────────────
 
@@ -84,7 +85,6 @@ if data_found:
     box_data = []; box_labels = []; box_colors = []
 
     for d in parsed_data:
-        # 기준선인 '기본값(exp0)'은 다른 그래프보다 조금 더 두껍게(linewidth=2.5) 그려서 잘 보이게 합니다.
         lw = 2.5 if "기본값" in d['label'] else 1.5
         ax_time.plot(d['times'], d['ops'], label=d['label'], color=d['color'], linestyle=d['ls'], linewidth=lw, alpha=0.8)
         ax_cum.plot(d['times'], d['cum'], label=d['label'], color=d['color'], linestyle=d['ls'], linewidth=lw)
