@@ -1,5 +1,5 @@
 #!/bin/bash
-# 쓰기 지연(Write Stall) 자동화 실험 스크립트 (총 10개 시나리오)
+# 쓰기 지연(Write Stall) 자동화 실험 스크립트 (총 11개 시나리오)
 # 기능: 중단 감지 시 무조건 (y/n)으로 물어보며, 'n' 선택 시 0번부터 전체 재시작
 
 # ── [경로 설정] ─────────────────────────────────────────
@@ -65,9 +65,10 @@ EXPS=(
     "exp8_direct_io|--threads=4 --use_direct_io_for_flush_and_compaction=true"
     
     # 9. Sync Commit (모든 쓰기마다 fsync 강제)
-    # ※ fsync 지연(1~5ms/op)으로 인해 300초에 약 0.5~2GB 기록 → 5GB 미달 가능하나,
-    #    sync 쓰기 특성상 --num 기반 10GB 달성은 수시간 소요되므로 300초를 상한으로 설정
     "exp9_sync_commit|--threads=4 --sync=1 --duration=300"
+    
+    # 10. 플러시 스레드 증가 (백그라운드 플러시 스레드 수를 4개로 늘려 Flush 병목 완화)
+    "exp10_flush_threads|--threads=4 --max_background_flushes=4"
 )
 # ────────────────────────────────────────────────────────
 
@@ -75,8 +76,6 @@ mkdir -p "${LOG_DIR}"
 mkdir -p "${AGG_DIR}"
 
 # 총 쓰기 목표: NUM_KEYS × VAL_SIZE = 10,000,000 × 1KB ≈ 9.5GB
-# 스레드 수와 무관하게 전체 합산 쓰기량이 동일하도록 per_thread_num = NUM_KEYS / thread_count 로 분배
-# → Write Stall이 의미있게 관찰되려면 5GB 이상 / 평균 10GB 쓰기가 필요 (교수님 권고)
 NUM_KEYS=10000000
 VAL_SIZE=1024
 
@@ -104,7 +103,7 @@ if [ -n "$NEWEST_LOG" ]; then
     if [ "$MATCHED_INDEX" -ne -1 ]; then
         if [ "$IS_COMPLETED" = true ]; then
             if [ "$MATCHED_INDEX" -eq $(( ${#EXPS[@]} - 1 )) ]; then
-                echo "💡 이전 10개의 실험 세트가 모두 완료된 것을 확인했습니다. 처음부터 새로 시작합니다."
+                echo "💡 이전 11개의 실험 세트가 모두 완료된 것을 확인했습니다. 처음부터 새로 시작합니다."
                 START_INDEX=0
             else
                 NEXT_INDEX=$(( MATCHED_INDEX + 1 ))
@@ -172,7 +171,6 @@ run_experiment() {
 
 # ── [메인 루프: 무조건 START_INDEX 부터 실행] ──────────
 for i in "${!EXPS[@]}"; do
-    # 이어하기 시작점(START_INDEX)보다 이전인 실험은 아무 말 없이 조용히 넘어갑니다.
     if [ "$i" -lt "$START_INDEX" ]; then
         continue
     fi
